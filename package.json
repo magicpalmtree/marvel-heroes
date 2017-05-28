@@ -27,8 +27,10 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "express-react-views": "^0.9.0",
+    "marvel-api": "^1.1.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-materialize": "^1.0.1"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",

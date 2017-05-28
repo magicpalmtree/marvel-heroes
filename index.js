@@ -4,6 +4,8 @@ var DOM = React.DOM;
 var body = DOM.body;
 var div = DOM.div;
 var script = DOM.script;
+var link = DOM.link;
+var title = DOM.title;
 
 var browserify = require('browserify');
 var babelify = require("babelify");
@@ -33,7 +35,13 @@ app.use('/bundle.js', function (req, res) {
       .pipe(res);
 });
 
-var data = []
+var data = [
+    {
+      a: '14959f4295852fad0b89f8227a4fb255',
+      b: '3e2dbdccccbbb89611eb0a2a4ea24ed546464ec9'
+    }
+]
+
 
 app.use('/', function (req, res) {
   var initialData = JSON.stringify(data);
@@ -41,15 +49,20 @@ app.use('/', function (req, res) {
 
   res.setHeader('Content-Type', 'text/html');
 
-  var html = ReactDOMServer.renderToStaticMarkup(body(null,
-      div({id: 'app', dangerouslySetInnerHTML: {__html: markup}}),
-      script({
-          id: 'initial-data',
-          type: 'text/plain',
-          'data-json': initialData
-      }),
-      script({src: '/bundle.js'})
-  ));
+
+  var html = ReactDOMServer.renderToStaticMarkup(
+      body(
+          null, 
+          div({id: 'app', dangerouslySetInnerHTML: {__html: markup}}),
+          script({ src: 'https://code.jquery.com/jquery-2.1.1.min.js'}),
+          script({ src: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js'}),
+          script({
+            id: 'initial-data',
+            type: 'text/plain',
+            'data-json': initialData
+        }),
+        script({src: '/bundle.js'})
+     ));
 
   res.end(html);
 });
