@@ -27,11 +27,24 @@ export default class Main extends Component {
   }
 }
 
+// Main.propTypes = {
+//     title: React.PropTypes.number.isRequired
+// };
+
 
 class Header extends Component{
   render(){
     return(
-      <Button waves='light'>EDIT ME<Icon left>save</Icon></Button>
+    <Row>
+      <Col s={12} style={style.tableContent} className='grid-example'>1</Col>
+    </Row>
     )
+  }
+}
+
+let style = {
+  tableContent:{
+    height: '20px',
+    backgroundColor: 'red'
   }
 }

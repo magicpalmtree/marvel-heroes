@@ -2,10 +2,12 @@ var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var DOM = React.DOM;
 var body = DOM.body;
+var head = DOM.head;
 var div = DOM.div;
 var script = DOM.script;
 var link = DOM.link;
 var title = DOM.title;
+
 
 var browserify = require('browserify');
 var babelify = require("babelify");
@@ -41,7 +43,7 @@ var data = [
       b: '3e2dbdccccbbb89611eb0a2a4ea24ed546464ec9'
     }
 ]
-
+console.log(title)
 
 app.use('/', function (req, res) {
   var initialData = JSON.stringify(data);
@@ -49,25 +51,25 @@ app.use('/', function (req, res) {
 
   res.setHeader('Content-Type', 'text/html');
 
+  var html = `
+    <!doctype html>
+      <html lang="en-us">
+      <head>
+        <meta charset="utf-8">
+        <title>Marvel App</title>
+        <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+      </head>
+      <body>
+        <div id="app">${markup}</div>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+      </body>
+    </html>`;
 
-  var html = ReactDOMServer.renderToStaticMarkup(
-      body(
-          null, 
-          div({id: 'app', dangerouslySetInnerHTML: {__html: markup}}),
-          script({ src: 'https://code.jquery.com/jquery-2.1.1.min.js'}),
-          script({ src: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js'}),
-          script({
-            id: 'initial-data',
-            type: 'text/plain',
-            'data-json': initialData
-        }),
-        script({src: '/bundle.js'})
-     ));
+    res.end(html);  
 
-  res.end(html);
 });
-
-
 
 app.listen(app.get('port'), function() {
   console.log('listening on port 3000')
