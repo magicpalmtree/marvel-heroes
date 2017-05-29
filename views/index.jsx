@@ -15,7 +15,7 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    marvel.characters.findByName('spider-man')
+    marvel.characters.findAll()
       .then(result => {
         this.setState({items: result.data})
       })
@@ -51,9 +51,14 @@ class Header extends Component{
             <Col s={12} m={3} style={style.header} >
               <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} /> 
             </Col>
-            <Col s={12} m={9} style={style.header} className="input-field">
-              <input type="text" id="search_bar"/>
-              <label htmlFor="search_bar">Search</label>      
+            <Col s={12} m={9} style={style.header} className="nav-wrapper">
+              <form>
+                <div className="input-field">
+                  <input id="search" type="search" />
+                  <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                  <i className="material-icons">close</i>
+                </div>
+              </form>
             </Col>          
           </Row>
         </div>
@@ -112,13 +117,14 @@ class Character extends Component{
   render(){
   return(
     <li className="card col s12 l5">
-      <div className="col s6">
+
+      <div style={style.cardHeight} className="col s6 valign-wrapper">
         <img className="circle" src={this.props.thumbnail} alt=""/>
       </div>
 
-      <div className="col s6">
+      <div style={style.cardHeight} className="col s6">
         <h3 className="card-title">{this.props.name}</h3>
-        <p id="character_description_id">{this.props.description}</p>
+        <p style={style.heightText} id="character_description_id">{this.props.description}</p>
         <Button className="red darken-1" waves='light'>View More</Button>    
       </div>
 
@@ -145,17 +151,33 @@ class Favorite extends Component{
   }
 }
 
-
-
 class Footer extends Component{
   render(){
     return(
-      <footer>
-        <Row style={style.row}>
-          <Col s={12} style={style.header} className="blue-grey lighten-5">
-            defsd
-          </Col>
-        </Row>
+      <footer className="page-footer">
+        <div className="container">
+          <Row style={style.row}>
+            <Col s={12} l={6} style={style.header}>
+              <h5 className="white-text">Marvel Character</h5>
+              <p className="grey-text text-lighten-4">This website is only created for educational purposes.</p>
+            </Col>
+            <Col s={12} l={14} offset='l2'>
+              <h5 className="white-text">About Camilo</h5>
+              <ul>
+                <li><a className="grey-text text-lighten-3" href="#!">Facebook</a></li>
+                <li><a className="grey-text text-lighten-3" href="#!">Instagram</a></li>
+                <li><a className="grey-text text-lighten-3" href="#!">Github</a></li>
+                <li><a className="grey-text text-lighten-3" href="#!">Linkedin</a></li>
+              </ul>            
+            </Col>
+          </Row>
+        </div>
+        <div className="footer-copyright">
+          <div className="container">
+            © 2017 Camilo Arguello
+            <a className="grey-text text-lighten-4 right" href="#!">camiloarguello.co</a>            
+          </div>
+        </div>
       </footer>
     )
   }
@@ -173,6 +195,12 @@ let style = {
   },
   imgHeader:{
     height: '50px'
+  },
+  cardHeight:{
+    height: '250px'
+  },
+  heightText:{
+    fontSize: '0.8em'
   }
 }
 
