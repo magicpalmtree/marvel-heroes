@@ -4,24 +4,12 @@ import { Button, Icon, Card, Row, Col } from 'react-materialize'
 
 
 export default class Main extends Component {
-  constructor(props){
-    super(props)
-  }
-  componentDidMount(){
-    let marvel = api.createClient({
-      publicKey: this.props.data[0].a,
-      privateKey: this.props.data[0].b
-    })
-    marvel.characters.findAll(10)
-      .then(console.log)
-      .fail(console.error)
-      .done()
-  }
   render(){
+    console.log("hisss")
     return(
       <div>
-        <Header />
-        <h1>Hola</h1>
+          <Header />
+          <Body />
       </div>
     )
   }
@@ -36,15 +24,52 @@ class Header extends Component{
   render(){
     return(
     <Row>
-      <Col s={12} style={style.tableContent} className='grid-example'>1</Col>
+      <Col s={12} style={style.header} className="purple darken-4">
+
+      </Col>
+    </Row>
+    )
+  }
+}
+
+class Body extends Component{
+  render(){
+    return(
+    <Row>
+      <Col s={8} style={style.header} className="grey lighten-5">
+        hi
+      </Col>
+    </Row>
+    )
+  }
+}
+
+class Favorite extends Component{
+  render(){
+    return(
+    <Row>
+      <Col s={2} style={style.header} className="grey lighten-2">
+        again
+      </Col>
+    </Row>
+    )
+  }
+}
+
+class Footer extends Component{
+  render(){
+    return(
+    <Row>
+      <Col s={12} style={style.header} className="blue-grey lighten-5">
+
+      </Col>
     </Row>
     )
   }
 }
 
 let style = {
-  tableContent:{
-    height: '20px',
-    backgroundColor: 'red'
+  header:{
+    height: '80px'
   }
 }
