@@ -15,7 +15,7 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    marvel.characters.findAll()
+    marvel.characters.findByName('spider-man')
       .then(result => {
         this.setState({items: result.data})
       })
@@ -45,7 +45,7 @@ class Header extends Component{
   render(){
     let contentHeader = this.props.contentHeader[0]
     return(
-      <nav className="purple darken-4">
+      <nav style={style.colorHeader}>
         <div className="container">
           <Row style={style.row}>
             <Col s={12} m={3} style={style.header} >
@@ -85,28 +85,57 @@ class Characters extends Component{
           key={character.id}
           name={character.name}
           description={character.description}
-          thumbnail={character.thumbnail.path + "/standard_fantastic." + character.thumbnail.extension} 
+          thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension} 
         />
       )
     })
     return(
       <div>
-        <Col s={12} m={9} style={style.header} className="grey lighten-1">
-          <div className="container">
+        <Col s={12} m={10} style={style.header} className="grey lighten-5">
+          <ul className="container">
             {myCharacter}
-          </div>
+          </ul>
         </Col>
       </div>    
     )
   }
 }
 
+class Character extends Component{
+  constructor(props){
+    super(props)
+  }
+  componentDidMount(){
+    let cDid = $('#character_description_id')
+    cDid.text(cDid.text().substring(0,250) + '...')        
+  }
+  render(){
+  return(
+    <li className="card col s12 l5">
+      <div className="col s6">
+        <img className="circle" src={this.props.thumbnail} alt=""/>
+      </div>
+
+      <div className="col s6">
+        <h3 className="card-title">{this.props.name}</h3>
+        <p id="character_description_id">{this.props.description}</p>
+        <Button className="red darken-1" waves='light'>View More</Button>    
+      </div>
+
+      <div className="col s12">
+        <p>Related Comics</p>
+      </div>
+        
+    </li>
+  )
+  }
+}
 
 class Favorite extends Component{
   render(){
     return(
       <div>
-        <Col s={12} m={3} style={style.header} className="grey lighten-3">
+        <Col s={12} m={2} style={style.header} className="grey lighten-3">
           <div className="container">
             hi
           </div>
@@ -116,15 +145,7 @@ class Favorite extends Component{
   }
 }
 
-function Character(props){
-  return(
-    <div>
-      <h3>{props.name}</h3>
-      <img src={props.thumbnail}/>
-      <p>{props.description}</p>
-    </div>
-  )
-}
+
 
 class Footer extends Component{
   render(){
@@ -141,6 +162,9 @@ class Footer extends Component{
 }
 
 let style = {
+  colorHeader:{
+    backgroundColor: 'rgb(45,39,39)',
+  },
   row:{
     marginBottom: 0,
   },
