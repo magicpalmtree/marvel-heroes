@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import api from 'marvel-api'
 import { Button, Icon, Card, Row, Col } from 'react-materialize'
 
+
+
 export default class Main extends Component {
   constructor(props){
     super(props)
@@ -9,6 +11,7 @@ export default class Main extends Component {
       items : [],
       search : ''
     }
+
     this.searchSuper = this.searchSuper.bind(this)
   }
   componentDidMount(){
@@ -21,24 +24,28 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    marvel.characters.findAll()
+
+    marvel.characters.findAll(10)
       .then(result => {
         this.setState({items: result.data})
       })
       .fail(console.error)
       .done()
   }
+
   searchSuper(event){
     this.setState({
       search : event.target.value
     })
+
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
+
     marvel.characters.findNameStartsWith(this.state.search)
       .then(result => {
-        this.setState({items: result.data})
+          this.setState({items: result.data})
       })
       .fail(console.error)
       .done()
@@ -96,7 +103,6 @@ class Header extends Component{
 
 class Body extends Component{
   render(){
-    console.log(this.props)
     return(
       <section>
         <Row style={style.row}>
