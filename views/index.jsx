@@ -6,10 +6,17 @@ export default class Main extends Component {
   constructor(props){
     super(props)
     this.state = {
-      items : []
+      items : [],
+      search : ''
     }
+    this.searchSuper = this.searchSuper.bind(this)
   }
   componentDidMount(){
+    let myBody = document.getElementById("app")
+    myBody.style.display = 'flex'
+    myBody.style.minHeight = '100vh'
+    myBody.style.flexDirection = 'column'
+
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
@@ -21,19 +28,39 @@ export default class Main extends Component {
       .fail(console.error)
       .done()
   }
+  searchSuper(event){
+    this.setState({
+      search : event.target.value
+    })
+    let marvel = api.createClient({
+      publicKey: this.props.data[0].a,
+      privateKey: this.props.data[0].b
+    })
+    marvel.characters.findNameStartsWith(this.state.search)
+      .then(result => {
+        this.setState({items: result.data})
+      })
+      .fail(console.error)
+      .done()
+  }
+
   render(){
     return(
-      <div>
-          <Header contentHeader={CONTENT}/>
+      <div style={style.body}>
+          <Header
+            contentHeader={CONTENT}
+            onChange={this.searchSuper}
+            search={this.state.search}
+            />
           <Body items={this.state.items}/>
           <Footer />
       </div>
     )
   }
 }
-
-// Main.propTypes = {
-//     title: React.PropTypes.number.isRequired
+//
+// Header.propTypes = {
+//     title: React.PropTypes.string.isRequired
 // };
 
 class Header extends Component{
@@ -52,10 +79,11 @@ class Header extends Component{
             <Col s={12} m={9} style={style.header} className="nav-wrapper">
               <form>
                 <div className="input-field">
-                  <input id="search" type="search" />
+                  <input id="search" type="search" value={this.props.search} onChange={this.props.onChange}/>
                   <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                   <i className="material-icons">close</i>
                 </div>
+                <p style={{ position: 'absolute', zIndex: 100 }}>{this.props.search}</p>
               </form>
             </Col>
           </Row>
@@ -183,6 +211,9 @@ class Footer extends Component{
 }
 
 let style = {
+  body:{
+    flex: '1 0 auto'
+  },
   colorHeader:{
     backgroundColor: 'rgb(45,39,39)',
   },
