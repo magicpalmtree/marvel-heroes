@@ -115,7 +115,7 @@ class Character extends Component{
   }
   render(){
   return(
-    <li className="card col s12 l5">
+    <li className="card col s12 m12 l5">
 
       <div style={style.cardHeight} className="col s6 valign-wrapper">
         <img className="circle" src={this.props.thumbnail} alt=""/>
