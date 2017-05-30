@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import api from 'marvel-api'
 import { Button, Icon, Card, Row, Col } from 'react-materialize'
 
-
 export default class Main extends Component {
   constructor(props){
     super(props)
@@ -37,7 +36,6 @@ export default class Main extends Component {
 //     title: React.PropTypes.number.isRequired
 // };
 
-
 class Header extends Component{
   constructor(props){
     super(props)
@@ -49,7 +47,7 @@ class Header extends Component{
         <div className="container">
           <Row style={style.row}>
             <Col s={12} m={3} style={style.header} >
-              <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} /> 
+              <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} />
             </Col>
             <Col s={12} m={9} style={style.header} className="nav-wrapper">
               <form>
@@ -59,13 +57,14 @@ class Header extends Component{
                   <i className="material-icons">close</i>
                 </div>
               </form>
-            </Col>          
+            </Col>
           </Row>
         </div>
       </nav>
     )
   }
 }
+
 
 class Body extends Component{
   render(){
@@ -74,8 +73,8 @@ class Body extends Component{
       <section>
         <Row style={style.row}>
           <Characters items={this.props.items}/>
-          <Favorite />   
-        </Row>        
+          <Favorites />
+        </Row>
       </section>
     )
   }
@@ -90,7 +89,7 @@ class Characters extends Component{
           key={character.id}
           name={character.name}
           description={character.description}
-          thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension} 
+          thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
         />
       )
     })
@@ -101,7 +100,7 @@ class Characters extends Component{
             {myCharacter}
           </ul>
         </Col>
-      </div>    
+      </div>
     )
   }
 }
@@ -112,7 +111,7 @@ class Character extends Component{
   }
   componentDidMount(){
     let cDid = $('#character_description_id')
-    cDid.text(cDid.text().substring(0,250) + '...')        
+    cDid.text(cDid.text().substring(0,250) + '...')
   }
   render(){
   return(
@@ -125,19 +124,19 @@ class Character extends Component{
       <div style={style.cardHeight} className="col s6">
         <h3 className="card-title">{this.props.name}</h3>
         <p style={style.heightText} id="character_description_id">{this.props.description}</p>
-        <Button className="red darken-1" waves='light'>View More</Button>    
+        <Button className="red darken-1" waves='light'>View More</Button>
       </div>
 
       <div className="col s12">
         <p>Related Comics</p>
       </div>
-        
+
     </li>
   )
   }
 }
 
-class Favorite extends Component{
+class Favorites extends Component{
   render(){
     return(
       <div>
@@ -168,14 +167,14 @@ class Footer extends Component{
                 <li><a className="grey-text text-lighten-3" href="#!">Instagram</a></li>
                 <li><a className="grey-text text-lighten-3" href="#!">Github</a></li>
                 <li><a className="grey-text text-lighten-3" href="#!">Linkedin</a></li>
-              </ul>            
+              </ul>
             </Col>
           </Row>
         </div>
         <div className="footer-copyright">
           <div className="container">
             © 2017 Camilo Arguello
-            <a className="grey-text text-lighten-4 right" href="#!">camiloarguello.co</a>            
+            <a className="grey-text text-lighten-4 right" href="#!">camiloarguello.co</a>
           </div>
         </div>
       </footer>
@@ -208,6 +207,6 @@ const CONTENT = [
   // HEADER
   {
     Logoimg: 'http://camiloarguello.co/img/icons/Marvel-logo.png',
-    Logoalt: 'Logo de Marvel' 
+    Logoalt: 'Logo de Marvel'
   }
 ]
