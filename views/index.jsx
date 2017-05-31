@@ -33,7 +33,7 @@ export default class Main extends Component {
       .fail(console.error)
       .done()
 
-      marvel.comics.findAll(5)
+      marvel.comics.findAll(5, getRandomInt(20,50) )
         .then((result) => {
           this.setState({
             comics : result.data
@@ -119,6 +119,13 @@ export default class Main extends Component {
     )
   }
 }
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 //
 // Header.propTypes = {
 //     title: React.PropTypes.string.isRequired
@@ -411,6 +418,7 @@ class Favorites extends Component{
     this.state = {
       isDeleted : false
     }
+
     this.deleteFavorite = this.deleteFavorite.bind(this)
   }
   deleteFavorite(event){
@@ -453,6 +461,7 @@ class Favorites extends Component{
 class Favorite extends Component{
   constructor(props){
     super(props)
+    console.log(this.props)
   }
   render(){
     return(
