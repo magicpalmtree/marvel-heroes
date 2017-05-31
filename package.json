@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "engines" : {
     "node": "7.9.0",
-    "npm" : "4.2.0",
+    "npm" : "4.2.0"
   },
   "description": "Test to application for a job at Grability",
   "main": "index.js",
