@@ -14,7 +14,6 @@ export default class Main extends Component {
     this.searchSuper = this.searchSuper.bind(this)
     this.paginationNumber = this.paginationNumber.bind(this)
   }
-
   componentDidMount(){
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
@@ -43,7 +42,6 @@ export default class Main extends Component {
         .fail(console.error)
         .done();
   }
-
   searchSuper(event){
     this.setState({
       search : event.target.value
@@ -61,16 +59,11 @@ export default class Main extends Component {
       .fail(console.error)
       .done()
   }
-
   paginationNumber(event){
-    console.log(event)
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-
-    let letter = 'A'
-
     if(event == 1){
       marvel.characters.findNameStartsWith('A')
         .then(result => {
@@ -185,6 +178,31 @@ class Body extends Component{
 }
 
 class Characters extends Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      mySelected : false,
+      mySelectId : '',
+      mySelectImg: '',
+      mySelectName: '',
+      mySelectDescription: ''
+    }
+    this.showCharacter = this.showCharacter.bind(this)
+  }
+  showCharacter(event){
+    event.preventDefault();
+    let mySelection = event._targetInst._currentElement._owner._instance.props
+    this.setState(
+      {
+        mySelected : true,
+        mySelectId : mySelection.id,
+        mySelectImg: mySelection.thumbnail,
+        mySelectName: mySelection.name,
+        mySelectDescription: mySelection.description
+      }
+    )
+    console.log(event._targetInst._currentElement._owner._instance.props)
+  }
   render(){
     let myCharacter = [], contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
     this.props.items.forEach((character) => {
@@ -208,14 +226,32 @@ class Characters extends Component{
           name={character.name}
           description={character.description}
           thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
+          onClick={this.showCharacter}
           comicB={comicsSimilarA}
           comicC={comicsSimilarB}
           comicA={comicsSimilarC}
           comicD={comicsSimilarD}
         />
       )
-
     })
+
+    let selectCharacterModal
+
+    if(this.state.mySelected){
+      selectCharacterModal = <SelectCharacter
+                                id={this.state.mySelectId}
+                                img={this.state.mySelectImg}
+                                name={this.state.mySelectName}
+                                description={this.state.mySelectDescription}
+                              />
+    }else{
+      selectCharacterModal = <SelectCharacter
+                                id="noid"
+                                img="noimg"
+                                name="notext"
+                                description="nodescription"
+                              />
+    }
 
     return(
       <div>
@@ -228,6 +264,7 @@ class Characters extends Component{
           <ul className="container">
             {myCharacter}
           </ul>
+          {selectCharacterModal}
         </Col>
       </div>
     )
@@ -237,47 +274,11 @@ class Characters extends Component{
 class Character extends Component{
   constructor(props){
     super(props)
-    this.state = {
-      mySelected : false,
-      mySelectId : '',
-      mySelectImg: '',
-      mySelectName: '',
-      mySelectDescription: ''
-    }
-    this.showCharacter = this.showCharacter.bind(this)
   }
   componentDidMount(){
     $('.modal').modal()
   }
-  showCharacter(event){
-    event.preventDefault();
-    this.setState(
-      {
-        mySelected : true,
-        mySelectId : this.props.id,
-        mySelectImg: this.props.thumbnail,
-        mySelectName: this.props.name,
-        mySelectDescription: this.props.description
-      }
-    )
-  }
   render(){
-    let selectCharacterModal
-    if(this.state.mySelected){
-      selectCharacterModal = <SelectCharacter
-                                id={this.props.id}
-                                img={this.state.mySelectImg}
-                                name={this.state.mySelectName}
-                                description={this.state.mySelectDescription}
-                              />
-    }else{
-      selectCharacterModal = <SelectCharacter
-                                id="no id"
-                                img="no img"
-                                name="no text"
-                                description="no description"
-                              />
-    }
   return(
     <li id={this.props.id} className="card col s12 m12 l5" style={{ margin: '20px' , borderTopLeftRadius: '30%'}} >
 
@@ -291,12 +292,12 @@ class Character extends Component{
         <a
           className="modal-trigger waves-effect waves-light btn red"
           href="#modal1"
-          onClick={this.showCharacter}
+          onClick={this.props.onClick}
         >
           View More
         </a>
       </div>
-      {selectCharacterModal}
+
       <div style={style.footerCardHeight} className="col s12">
         <p><b>Related Comics</b></p>
         <ul className="col s6">
@@ -367,9 +368,7 @@ class Paginations extends Component{
       <div className="container">
         <Row>
           <ul className="col s12 pagination center">
-            <Pagination items={5} activePage={1} maxButtons={5} onSelect={this.props.onClick}>
-
-            </Pagination>
+            <Pagination items={5} activePage={1} maxButtons={5} onSelect={this.props.onClick} />
           </ul>
         </Row>
       </div>
