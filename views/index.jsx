@@ -11,7 +11,9 @@ export default class Main extends Component {
       search : ''
     }
     this.searchSuper = this.searchSuper.bind(this)
+    this.paginationNumber = this.paginationNumber.bind(this)
   }
+
   componentDidMount(){
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
@@ -22,7 +24,7 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    marvel.characters.findAll()
+    marvel.characters.findAll(10)
       .then((result) => {
         this.setState({
           items: result.data
@@ -59,6 +61,23 @@ export default class Main extends Component {
       .done()
   }
 
+  paginationNumber(event){
+
+    let marvel = api.createClient({
+      publicKey: this.props.data[0].a,
+      privateKey: this.props.data[0].b
+    })
+
+    console.log(this)
+
+
+    marvel.characters.findNameStartsWith('B')
+      .then(result => {
+          this.setState({items: result.data})
+      })
+      .fail(console.error)
+      .done()
+  }
   render(){
     return(
       <div style={style.body}>
@@ -70,6 +89,7 @@ export default class Main extends Component {
           <Body
             items={this.state.items}
             comics={this.state.comics}
+            onClick={this.paginationNumber}
             />
           <Footer />
       </div>
@@ -120,9 +140,13 @@ class Body extends Component{
             items={this.props.items}
             contentTitle={CONTENT}
             />
+
           <Favorites
             comics={this.props.comics}
             contentTitle={CONTENT}
+          />
+          <Pagination
+            onClick={this.props.onClick}
           />
         </Row>
       </section>
@@ -174,7 +198,6 @@ class Characters extends Component{
           <ul className="container">
             {myCharacter}
           </ul>
-          <Pagination />
         </Col>
       </div>
     )
@@ -304,7 +327,11 @@ class SelectCharacter extends Component{
     )
   }
 }
+
 class Pagination extends Component{
+  constructor(props){
+    super(props)
+  }
   render(){
     return(
       <div className="container">
@@ -312,7 +339,7 @@ class Pagination extends Component{
           <ul className="col s12 pagination center">
             <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
             <li className="active"><a href="#!">1</a></li>
-            <li className="waves-effect"><a href="#!">2</a></li>
+            <li className="waves-effect" onClick={this.props.onClick}><a href="#!">2</a></li>
             <li className="waves-effect"><a href="#!">3</a></li>
             <li className="waves-effect"><a href="#!">4</a></li>
             <li className="waves-effect"><a href="#!">5</a></li>
