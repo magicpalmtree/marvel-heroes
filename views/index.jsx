@@ -13,6 +13,7 @@ export default class Main extends Component {
     }
     this.searchSuper = this.searchSuper.bind(this)
     this.paginationNumber = this.paginationNumber.bind(this)
+    this.clickComic = this.clickComic.bind(this)
   }
   componentDidMount(){
     let myBody = document.getElementById("app")
@@ -101,6 +102,16 @@ export default class Main extends Component {
         .done()
     }
   }
+  clickComic(event){
+    let marvel = api.createClient({
+      publicKey: this.props.data[0].a,
+      privateKey: this.props.data[0].b
+    })
+    marvel.comics.find('4110')
+      .then(console.log)
+      .fail(console.error)
+      .done();
+  }
   render(){
     return(
       <div style={style.body}>
@@ -112,7 +123,8 @@ export default class Main extends Component {
           <Body
             items={this.state.items}
             comics={this.state.comics}
-            onClick={this.paginationNumber}
+            paginationN={this.paginationNumber}
+            clickComic={this.clickComic}
             />
           <Footer />
       </div>
@@ -147,7 +159,7 @@ class Header extends Component{
             <Col s={12} m={9} style={style.header} className="nav-wrapper">
               <form style={{ backgroundColor: 'rgb(45,39,39)' }}>
                 <div className="input-field">
-                  <input id="search" type="search" value={this.props.search} onChange={this.props.onChange}/>
+                  <input id="search" placeholder="Search character..." type="search" value={this.props.search} onChange={this.props.onChange}/>
                   <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                   <i className="material-icons">close</i>
                 </div>
@@ -169,6 +181,7 @@ class Body extends Component{
           <Characters
             items={this.props.items}
             comics={this.props.comics}
+            clickComic={this.props.clickComic}
             contentTitle={CONTENT}
             />
 
@@ -177,7 +190,7 @@ class Body extends Component{
             contentTitle={CONTENT}
           />
           <Paginations
-            onClick={this.props.onClick}
+            onClick={this.props.paginationN}
           />
         </Row>
       </section>
@@ -188,6 +201,7 @@ class Body extends Component{
 class Characters extends Component{
   constructor(props){
     super(props)
+    console.log(this.props)
     this.state = {
       mySelected : false,
       mySelectId : '',
@@ -235,7 +249,8 @@ class Characters extends Component{
           name={character.name}
           description={character.description}
           thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
-          onClick={this.showCharacter}
+          showCharacter={this.showCharacter}
+          onClick={this.props.clickComic}
           comicB={comicsSimilarA}
           comicC={comicsSimilarB}
           comicA={comicsSimilarC}
@@ -298,7 +313,10 @@ class Character extends Component{
       <div style={style.cardHeight} className="col s12 m6">
         <h3 className="card-title">{this.props.name}</h3>
         <p style={style.heightText}>{this.props.description}</p>
-        <a className="waves-effect waves-light btn red">
+        <a
+          className="waves-effect waves-light btn red"
+          onClick={this.props.showCharacter}
+        >
           View More
         </a>
       </div>
@@ -346,6 +364,7 @@ class Character extends Component{
           </li>
         </ul>
       </div>
+
     </li>
   )
   }
@@ -376,26 +395,6 @@ function TitleSection(props){
   )
 }
 
-class SelectComic extends Component{
-  constructor(props){
-    super(props)
-  }
-  render(){
-    return(
-      <div id="modal1" className="modal modal-fixed-footer">
-        <div className="modal-content">
-          <h4>{this.props.name}</h4>
-          <img src={this.props.img} />
-          <p>{this.props.description}</p>
-        </div>
-        <div className="modal-footer">
-          <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-        </div>
-      </div>
-    )
-  }
-}
-
 class Paginations extends Component{
   constructor(props){
     super(props)
@@ -415,18 +414,11 @@ class Paginations extends Component{
 class Favorites extends Component{
   constructor(props){
     super(props)
-    this.state = {
-      isDeleted : false
-    }
-
     this.deleteFavorite = this.deleteFavorite.bind(this)
   }
   deleteFavorite(event){
     let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
     myDelete.style.display = 'none';
-    this.setState({
-      isDeleted : true
-    })
   }
   render(){
     let contentTitle = this.props.contentTitle[2], myFavorite = []
@@ -437,7 +429,7 @@ class Favorites extends Component{
             key={favorite.id}
             id={favorite.id}
             title={favorite.title}
-            thumbnail={favorite.thumbnail.path + "/portrait_incredible." + favorite.thumbnail.extension}
+            thumbnail={favorite.thumbnail.path + "/portrait_fantastic." + favorite.thumbnail.extension}
             onClick={this.deleteFavorite}
           />
         )
@@ -461,7 +453,6 @@ class Favorites extends Component{
 class Favorite extends Component{
   constructor(props){
     super(props)
-    console.log(this.props)
   }
   render(){
     return(
@@ -477,12 +468,34 @@ class Favorite extends Component{
         >
           <i className="fa fa-trash" aria-hidden="true"></i>
         </a>
-        <img src={this.props.thumbnail} />
+        <img style={{ width: '230px' }} src={this.props.thumbnail} />
         <h5><b>{this.props.title}</b></h5>
       </li>
     )
   }
 }
+
+class SelectComic extends Component{
+  constructor(props){
+    super(props)
+  }
+  render(){
+    return(
+      <div id="modal1" className="modal modal-fixed-footer">
+        <div className="modal-content">
+          <h4>{this.props.name}</h4>
+          <img src={this.props.img} />
+          <p>{this.props.description}</p>
+        </div>
+        <div className="modal-footer">
+          <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+      </div>
+    )
+  }
+}
+
+
 class Footer extends Component{
   render(){
     return(
