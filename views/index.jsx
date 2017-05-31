@@ -12,7 +12,6 @@ export default class Main extends Component {
     }
     this.searchSuper = this.searchSuper.bind(this)
   }
-
   componentDidMount(){
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
@@ -185,33 +184,72 @@ class Characters extends Component{
   }
 }
 
+function getData(data){
+  return data
+}
+
 class Character extends Component{
   constructor(props){
     super(props)
+    this.state = {
+      mySelected : false,
+      mySelectId : '',
+      mySelectImg: '',
+      mySelectName: '',
+      mySelectDescription: ''
+    }
+    this.showCharacter = this.showCharacter.bind(this)
   }
   componentDidMount(){
-    let cDid = $('#character_description_id')
-    cDid.text(cDid.text().substring(0,250) + '...')
+    $('.modal').modal()
+  }
+  showCharacter(event){
+    event.preventDefault();
+    this.setState(
+      {
+        mySelected : true,
+        mySelectId : this.props.id,
+        mySelectImg: this.props.thumbnail,
+        mySelectName: this.props.name,
+        mySelectDescription: this.props.description
+      }
+    )
   }
   render(){
-    // <Button className="modal-trigger red darken-1" waves='light' modal='confirm'>View More</Button>
+    let selectCharacterModal
+    if(this.state.mySelected){
+      selectCharacterModal = <SelectCharacter
+                                id={this.props.id}
+                                img={this.state.mySelectImg}
+                                name={this.state.mySelectName}
+                                description={this.state.mySelectDescription}
+                              />
+    }else{
+      selectCharacterModal = <SelectCharacter
+                                id="no id"
+                                img="no img"
+                                name="no text"
+                                description="no description"
+                              />
+    }
   return(
     <li id={this.props.id} className="card col s12 m12 l5" style={{ margin: '20px' , borderTopLeftRadius: '30%'}} >
 
       <div style={style.cardHeight} className="col s6 valign-wrapper">
         <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt=""/>
       </div>
-
       <div style={style.cardHeight} className="col s6">
         <h3 className="card-title">{this.props.name}</h3>
-        <p style={style.heightText} id="character_description_id">{this.props.description}</p>
-
-        <a className="modal-trigger waves-effect waves-light btn red" href="#modal1">Modal</a>
-
+        <p style={style.heightText}>{this.props.description}</p>
+        <a
+          className="modal-trigger waves-effect waves-light btn red"
+          href="#modal1"
+          onClick={this.showCharacter}
+        >
+          View More
+        </a>
       </div>
-
-      <SelectCharacter />
-
+      {selectCharacterModal}
       <div style={style.footerCardHeight} className="col s12">
         <p><b>Related Comics</b></p>
         <ul className="col s6">
@@ -223,7 +261,6 @@ class Character extends Component{
           <li style={style.liFooterCard}>{this.props.comicD}</li>
         </ul>
       </div>
-
     </li>
   )
   }
@@ -260,10 +297,11 @@ class SelectCharacter extends Component{
   }
   render(){
     return(
-      <div id="modal1" className="modal">
+      <div id="modal1" className="modal modal-fixed-footer">
         <div className="modal-content">
-          <h4>Modal Header</h4>
-          <p>A bunch of text</p>
+          <h4>{this.props.name}</h4>
+          <img src={this.props.img} />
+          <p>{this.props.description}</p>
         </div>
         <div className="modal-footer">
           <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
@@ -272,7 +310,6 @@ class SelectCharacter extends Component{
     )
   }
 }
-
 class Pagination extends Component{
   render(){
     return(
@@ -292,7 +329,6 @@ class Pagination extends Component{
     )
   }
 }
-
 class Favorites extends Component{
   constructor(props){
     super(props)
