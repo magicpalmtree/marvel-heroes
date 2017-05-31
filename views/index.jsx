@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import api from 'marvel-api'
-import { Button, Icon, Card, Row, Col } from 'react-materialize'
+import { Pagination,Button, Icon, Card, Row, Col } from 'react-materialize'
+// import Pagination from '../components/Pagination'
 
 export default class Main extends Component {
   constructor(props){
@@ -62,21 +63,50 @@ export default class Main extends Component {
   }
 
   paginationNumber(event){
-
+    console.log(event)
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
 
-    console.log(this)
+    let letter = 'A'
 
-
-    marvel.characters.findNameStartsWith('B')
-      .then(result => {
-          this.setState({items: result.data})
-      })
-      .fail(console.error)
-      .done()
+    if(event == 1){
+      marvel.characters.findNameStartsWith('A')
+        .then(result => {
+            this.setState({items: result.data})
+        })
+        .fail(console.error)
+        .done()
+    }else if(event == 2){
+      marvel.characters.findNameStartsWith('B')
+        .then(result => {
+            this.setState({items: result.data})
+        })
+        .fail(console.error)
+        .done()
+    }else if(event == 3){
+      marvel.characters.findNameStartsWith('C')
+        .then(result => {
+            this.setState({items: result.data})
+        })
+        .fail(console.error)
+        .done()
+    }else if(event == 4){
+      marvel.characters.findNameStartsWith('D')
+        .then(result => {
+            this.setState({items: result.data})
+        })
+        .fail(console.error)
+        .done()
+    }else{
+      marvel.characters.findNameStartsWith('E')
+        .then(result => {
+            this.setState({items: result.data})
+        })
+        .fail(console.error)
+        .done()
+    }
   }
   render(){
     return(
@@ -145,7 +175,7 @@ class Body extends Component{
             comics={this.props.comics}
             contentTitle={CONTENT}
           />
-          <Pagination
+          <Paginations
             onClick={this.props.onClick}
           />
         </Row>
@@ -328,23 +358,18 @@ class SelectCharacter extends Component{
   }
 }
 
-class Pagination extends Component{
+class Paginations extends Component{
   constructor(props){
     super(props)
   }
   render(){
-
     return(
       <div className="container">
         <Row>
           <ul className="col s12 pagination center">
-            <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
-            <li className="active"><a href="#!">1</a></li>
-            <li className="waves-effect" onClick={this.props.onClick}><a href="#!">2</a></li>
-            <li className="waves-effect"><a href="#!">3</a></li>
-            <li className="waves-effect"><a href="#!">4</a></li>
-            <li className="waves-effect"><a href="#!">5</a></li>
-            <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
+            <Pagination items={5} activePage={1} maxButtons={5} onSelect={this.props.onClick}>
+
+            </Pagination>
           </ul>
         </Row>
       </div>

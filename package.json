@@ -30,6 +30,7 @@
     "marvel-api": "^1.1.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-js-pagination": "^2.1.0",
     "react-materialize": "^1.0.1"
   },
   "devDependencies": {
