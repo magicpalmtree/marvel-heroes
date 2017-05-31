@@ -115,7 +115,6 @@ class Header extends Component{
   }
 }
 
-
 class Body extends Component{
   render(){
     return(
@@ -196,18 +195,23 @@ class Character extends Component{
     cDid.text(cDid.text().substring(0,250) + '...')
   }
   render(){
+    // <Button className="modal-trigger red darken-1" waves='light' modal='confirm'>View More</Button>
   return(
-    <li style={{ margin: '20px'}} className="card col s12 m12 l5">
+    <li style={{ margin: '20px' , borderTopLeftRadius: '30%'}} className="card col s12 m12 l5">
 
       <div style={style.cardHeight} className="col s6 valign-wrapper">
-        <img className="circle" src={this.props.thumbnail} alt=""/>
+        <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt=""/>
       </div>
 
       <div style={style.cardHeight} className="col s6">
         <h3 className="card-title">{this.props.name}</h3>
         <p style={style.heightText} id="character_description_id">{this.props.description}</p>
-        <Button className="red darken-1" waves='light'>View More</Button>
+
+        <a className="modal-trigger waves-effect waves-light btn red" href="#modal1">Modal</a>
+
       </div>
+
+      <SelectCharacter />
 
       <div style={style.footerCardHeight} className="col s12">
         <p><b>Related Comics</b></p>
@@ -249,6 +253,25 @@ function TitleSection(props){
       </Row>
     </div>
   )
+}
+
+class SelectCharacter extends Component{
+  constructor(props){
+    super(props)
+  }
+  render(){
+    return(
+      <div id="modal1" className="modal">
+        <div className="modal-content">
+          <h4>Modal Header</h4>
+          <p>A bunch of text</p>
+        </div>
+        <div className="modal-footer">
+          <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+      </div>
+    )
+  }
 }
 
 class Pagination extends Component{
@@ -304,9 +327,10 @@ class Favorites extends Component{
 class Favorite extends Component{
   render(){
     return(
-      <li>
+      <li className="center" style={{ marginTop: '100px' }}>
+        <a className="btn-floating btn-large waves-effect waves-light black" style={{ position: 'absolute', margin: '-20px 190px' }}><i className="fa fa-trash" aria-hidden="true"></i></a>
         <img src={this.props.thumbnail} />
-        <p>{this.props.title}</p>
+        <h5><b>{this.props.title}</b></h5>
       </li>
     )
   }

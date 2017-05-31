@@ -63,6 +63,7 @@ app.use('/', function (req, res) {
         meta({ name: 'description', content: 'Marvel character search. See your favorite superheroes here!'}),
         meta({ name: 'author', content: 'Camilo Arguello'}),
         link({rel: 'stylesheet' , href: 'http://fonts.googleapis.com/icon?family=Material+Icons'}),
+        link({rel: 'stylesheet' , href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'}),
         link({rel: 'stylesheet' , href: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css'})
       ),
       body(
