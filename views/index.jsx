@@ -25,10 +25,13 @@ export default class Main extends Component {
       privateKey: this.props.data[0].b
     })
 
-    marvel.characters.findAll(10)
-      .then(result => {
-        this.setState({items: result.data})
+    marvel.characters.findAll()
+      .then((result) => {
+        this.setState({
+          items: result.data
+        })
       })
+
       .fail(console.error)
       .done()
   }
@@ -59,7 +62,9 @@ export default class Main extends Component {
             onChange={this.searchSuper}
             search={this.state.search}
             />
-          <Body items={this.state.items}/>
+          <Body
+            items={this.state.items}
+            />
           <Footer />
       </div>
     )
@@ -106,7 +111,9 @@ class Body extends Component{
     return(
       <section>
         <Row style={style.row}>
-          <Characters items={this.props.items}/>
+          <Characters
+            items={this.props.items}
+            />
           <Favorites />
         </Row>
       </section>
@@ -117,15 +124,35 @@ class Body extends Component{
 class Characters extends Component{
   render(){
     let myCharacter = []
+
     this.props.items.forEach((character) => {
-      myCharacter.push(
-        <Character
-          key={character.id}
-          name={character.name}
-          description={character.description}
-          thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
-        />
-      )
+      if(character.comics.items.length > 4){
+        myCharacter.push(
+          <Character
+            key={character.id}
+            name={character.name}
+            description={character.description}
+            thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
+            comicA={character.comics.items[0].name}
+            comicB={character.comics.items[1].name}
+            comicC={character.comics.items[2].name}
+            comicD={character.comics.items[3].name}
+          />
+        )
+      }else{
+        myCharacter.push(
+          <Character
+            key={character.id}
+            name={character.name}
+            description={character.description}
+            thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
+            comicA={'Related comic name'}
+            comicB={'Related comic name'}
+            comicC={'Related comic name'}
+            comicD={'Related comic name'}
+          />
+        )
+      }
     })
     return(
       <div>
@@ -133,6 +160,7 @@ class Characters extends Component{
           <ul className="container">
             {myCharacter}
           </ul>
+          <Pagination />
         </Col>
       </div>
     )
@@ -161,8 +189,16 @@ class Character extends Component{
         <Button className="red darken-1" waves='light'>View More</Button>
       </div>
 
-      <div className="col s12">
-        <p>Related Comics</p>
+      <div style={style.footerCardHeight} className="col s12">
+        <p><b>Related Comics</b></p>
+        <ul className="col s6">
+          <li>{this.props.comicA}</li>
+          <li style={style.liFooterCard}>{this.props.comicB}</li>
+        </ul>
+        <ul className="col s6">
+          <li>{this.props.comicC}</li>
+          <li style={style.liFooterCard}>{this.props.comicD}</li>
+        </ul>
       </div>
 
     </li>
@@ -184,10 +220,27 @@ class Favorites extends Component{
   }
 }
 
+
+class Pagination extends Component{
+  render(){
+    return(
+      <ul className="pagination">
+        <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
+        <li className="active"><a href="#!">1</a></li>
+        <li className="waves-effect"><a href="#!">2</a></li>
+        <li className="waves-effect"><a href="#!">3</a></li>
+        <li className="waves-effect"><a href="#!">4</a></li>
+        <li className="waves-effect"><a href="#!">5</a></li>
+        <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
+      </ul>
+    )
+  }
+}
+
 class Footer extends Component{
   render(){
     return(
-      <footer className="page-footer">
+      <footer className="page-footer" style={style.colorHeader}>
         <div className="container">
           <Row style={style.row}>
             <Col s={12} l={6} style={style.header}>
@@ -205,7 +258,7 @@ class Footer extends Component{
             </Col>
           </Row>
         </div>
-        <div className="footer-copyright">
+        <div className="footer-copyright grey darken-4" >
           <div className="container">
             © 2017 Camilo Arguello
             <a className="grey-text text-lighten-4 right" href="#!">camiloarguello.co</a>
@@ -234,6 +287,12 @@ let style = {
   },
   cardHeight:{
     height: '250px'
+  },
+  footerCardHeight:{
+    height: '200px'
+  },
+  liFooterCard:{
+    marginTop: '20px'
   },
   heightText:{
     fontSize: '0.8em'
