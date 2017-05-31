@@ -7,10 +7,6 @@
   },
   "description": "Test to application for a job at Grability",
   "main": "index.js",
-  "scripts": {
-    "test": "",
-    "start": "node index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kmiloarguello/testGrability.git"
@@ -44,5 +40,11 @@
     "browserify": "^14.4.0",
     "chai": "^4.0.0",
     "mocha": "^3.4.2"
+  },
+  "scripts": {
+    "test": "",
+    "start": "node index.js",
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
+    "heroku-postbuild": "echo This runs afterwards."
   }
 }
