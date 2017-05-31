@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import api from 'marvel-api'
 import { Button, Icon, Card, Row, Col } from 'react-materialize'
 
-
-
 export default class Main extends Component {
   constructor(props){
     super(props)
@@ -12,9 +10,9 @@ export default class Main extends Component {
       comics: [],
       search : ''
     }
-
     this.searchSuper = this.searchSuper.bind(this)
   }
+
   componentDidMount(){
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
@@ -25,7 +23,6 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-
     marvel.characters.findAll()
       .then((result) => {
         this.setState({
@@ -143,6 +140,7 @@ class Characters extends Component{
         myCharacter.push(
           <Character
             key={character.id}
+            id={character.id}
             name={character.name}
             description={character.description}
             thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
@@ -156,6 +154,7 @@ class Characters extends Component{
         myCharacter.push(
           <Character
             key={character.id}
+            id={character.id}
             name={character.name}
             description={character.description}
             thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
@@ -197,7 +196,7 @@ class Character extends Component{
   render(){
     // <Button className="modal-trigger red darken-1" waves='light' modal='confirm'>View More</Button>
   return(
-    <li style={{ margin: '20px' , borderTopLeftRadius: '30%'}} className="card col s12 m12 l5">
+    <li id={this.props.id} className="card col s12 m12 l5" style={{ margin: '20px' , borderTopLeftRadius: '30%'}} >
 
       <div style={style.cardHeight} className="col s6 valign-wrapper">
         <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt=""/>
@@ -295,7 +294,18 @@ class Pagination extends Component{
 }
 
 class Favorites extends Component{
-
+  constructor(props){
+    super(props)
+    this.state = {
+      isDeleted : false
+    }
+    this.deleteFavorite = this.deleteFavorite.bind(this)
+  }
+  deleteFavorite(event){
+    this.setState({
+      isDeleted : true
+    })
+  }
   render(){
     let contentTitle = this.props.contentTitle[2], myFavorite = []
 
@@ -303,8 +313,10 @@ class Favorites extends Component{
         myFavorite.push(
           <Favorite
             key={favorite.id}
+            id={favorite.id}
             title={favorite.title}
             thumbnail={favorite.thumbnail.path + "/portrait_incredible." + favorite.thumbnail.extension}
+            onClick={this.deleteFavorite}
           />
         )
       })
@@ -325,26 +337,40 @@ class Favorites extends Component{
   }
 }
 class Favorite extends Component{
+  constructor(props){
+    super(props)
+  }
+
   render(){
+
     return(
-      <li className="center" style={{ marginTop: '100px' }}>
-        <a className="btn-floating btn-large waves-effect waves-light black" style={{ position: 'absolute', margin: '-20px 190px' }}><i className="fa fa-trash" aria-hidden="true"></i></a>
+      <li
+        id={this.props.id}
+        onClick={this.props.onClick}
+        className="center"
+        style={{ marginTop: '100px' }}
+      >
+        <a
+          className="btn-floating btn-large waves-effect waves-light black"
+          style={{ position: 'absolute', margin: '-20px 190px' }}
+        >
+          <i className="fa fa-trash" aria-hidden="true"></i>
+        </a>
         <img src={this.props.thumbnail} />
         <h5><b>{this.props.title}</b></h5>
       </li>
     )
   }
 }
-
 class Footer extends Component{
   render(){
     return(
-      <footer className="page-footer" style={style.colorHeader}>
+      <footer className="page-footer" style={style.footerPos}>
         <div className="container">
           <Row style={style.row}>
             <Col s={12} l={6} style={style.header}>
               <h5 className="white-text">Marvel Character</h5>
-              <p className="grey-text text-lighten-4">This website is only created for educational and for a job application at Grability.</p>
+              <p className="grey-text text-lighten-4">This website is only created for educational pursposes and for a job application at Grability.</p>
             </Col>
           </Row>
         </div>
@@ -387,6 +413,11 @@ let style = {
   },
   heightText:{
     fontSize: '0.8em'
+  },
+  footerPos:{
+    position: 'relative',
+    bottom: 0,
+    backgroundColor: 'rgb(45,39,39)'
   }
 }
 
