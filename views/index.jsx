@@ -161,6 +161,7 @@ class Body extends Component{
         <Row style={style.row}>
           <Characters
             items={this.props.items}
+            comics={this.props.comics}
             contentTitle={CONTENT}
             />
 
@@ -201,7 +202,8 @@ class Characters extends Component{
         mySelectDescription: mySelection.description
       }
     )
-    console.log(event._targetInst._currentElement._owner._instance.props)
+
+    // console.log(event._targetInst._currentElement._owner._instance.props)
   }
   render(){
     let myCharacter = [], contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
@@ -235,17 +237,17 @@ class Characters extends Component{
       )
     })
 
-    let selectCharacterModal
+    let selectComicModal
 
     if(this.state.mySelected){
-      selectCharacterModal = <SelectCharacter
+      selectComicModal = <SelectComic
                                 id={this.state.mySelectId}
                                 img={this.state.mySelectImg}
                                 name={this.state.mySelectName}
                                 description={this.state.mySelectDescription}
                               />
     }else{
-      selectCharacterModal = <SelectCharacter
+      selectComicModal = <SelectComic
                                 id="noid"
                                 img="noimg"
                                 name="notext"
@@ -264,7 +266,7 @@ class Characters extends Component{
           <ul className="container">
             {myCharacter}
           </ul>
-          {selectCharacterModal}
+          {selectComicModal}
         </Col>
       </div>
     )
@@ -289,11 +291,7 @@ class Character extends Component{
       <div style={style.cardHeight} className="col s12 m6">
         <h3 className="card-title">{this.props.name}</h3>
         <p style={style.heightText}>{this.props.description}</p>
-        <a
-          className="modal-trigger waves-effect waves-light btn red"
-          href="#modal1"
-          onClick={this.props.onClick}
-        >
+        <a className="waves-effect waves-light btn red">
           View More
         </a>
       </div>
@@ -301,12 +299,44 @@ class Character extends Component{
       <div style={style.footerCardHeight} className="col s12">
         <p><b>Related Comics</b></p>
         <ul className="col s6">
-          <li>{this.props.comicA}</li>
-          <li style={style.liFooterCard}>{this.props.comicB}</li>
+          <li>
+            <a
+              href="#modal1"
+              className="modal-trigger"
+              onClick={this.props.onClick}
+            >
+              {this.props.comicA}
+            </a>
+          </li>
+          <li style={style.liFooterCard}>
+            <a
+              href="#modal1"
+              className="modal-trigger"
+              onClick={this.props.onClick}
+            >
+              {this.props.comicB}
+            </a>
+          </li>
         </ul>
         <ul className="col s6">
-          <li>{this.props.comicC}</li>
-          <li style={style.liFooterCard}>{this.props.comicD}</li>
+          <li>
+            <a
+              href="#modal1"
+              className="modal-trigger"
+              onClick={this.props.onClick}
+            >
+              {this.props.comicC}
+            </a>
+          </li>
+          <li style={style.liFooterCard}>
+            <a
+              href="#modal1"
+              className="modal-trigger"
+              onClick={this.props.onClick}
+            >
+              {this.props.comicD}
+            </a>
+          </li>
         </ul>
       </div>
     </li>
@@ -339,7 +369,7 @@ function TitleSection(props){
   )
 }
 
-class SelectCharacter extends Component{
+class SelectComic extends Component{
   constructor(props){
     super(props)
   }
@@ -384,6 +414,8 @@ class Favorites extends Component{
     this.deleteFavorite = this.deleteFavorite.bind(this)
   }
   deleteFavorite(event){
+    let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
+    myDelete.style.display = 'none';
     this.setState({
       isDeleted : true
     })
@@ -422,17 +454,15 @@ class Favorite extends Component{
   constructor(props){
     super(props)
   }
-
   render(){
-
     return(
       <li
         id={this.props.id}
-        onClick={this.props.onClick}
         className="center"
         style={{ marginTop: '100px' }}
       >
         <a
+          onClick={this.props.onClick}
           className="btn-floating btn-large waves-effect waves-light black"
           style={{ position: 'absolute', margin: '-20px 190px' }}
         >
