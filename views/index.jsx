@@ -9,6 +9,7 @@ export default class Main extends Component {
     super(props)
     this.state = {
       items : [],
+      comics: [],
       search : ''
     }
 
@@ -31,9 +32,17 @@ export default class Main extends Component {
           items: result.data
         })
       })
-
       .fail(console.error)
       .done()
+
+      marvel.comics.findAll(5)
+        .then((result) => {
+          this.setState({
+            comics : result.data
+          })
+        })
+        .fail(console.error)
+        .done();
   }
 
   searchSuper(event){
@@ -64,6 +73,7 @@ export default class Main extends Component {
             />
           <Body
             items={this.state.items}
+            comics={this.state.comics}
             />
           <Footer />
       </div>
@@ -113,8 +123,12 @@ class Body extends Component{
         <Row style={style.row}>
           <Characters
             items={this.props.items}
+            contentTitle={CONTENT}
             />
-          <Favorites />
+          <Favorites
+            comics={this.props.comics}
+            contentTitle={CONTENT}
+          />
         </Row>
       </section>
     )
@@ -123,7 +137,7 @@ class Body extends Component{
 
 class Characters extends Component{
   render(){
-    let myCharacter = []
+    let myCharacter = [], contentTitle = this.props.contentTitle[1]
 
     this.props.items.forEach((character) => {
       if(character.comics.items.length > 4){
@@ -154,9 +168,15 @@ class Characters extends Component{
         )
       }
     })
+
     return(
       <div>
-        <Col s={12} m={10} style={style.header} className="grey lighten-5">
+        <Col s={12} m={9} style={style.header} className="grey lighten-5">
+          <TitleSection
+            img={contentTitle.titleImg}
+            alt={contentTitle.titleAlt}
+            title={contentTitle.titleText}
+          />
           <ul className="container">
             {myCharacter}
           </ul>
@@ -177,7 +197,7 @@ class Character extends Component{
   }
   render(){
   return(
-    <li className="card col s12 m12 l5">
+    <li style={{ margin: '20px'}} className="card col s12 m12 l5">
 
       <div style={style.cardHeight} className="col s6 valign-wrapper">
         <img className="circle" src={this.props.thumbnail} alt=""/>
@@ -206,33 +226,88 @@ class Character extends Component{
   }
 }
 
-class Favorites extends Component{
+function TitleSection(props){
+  // <Col s={3}>
+  //   <a className='dropdown-button btn white black-text' href='#' data-activates='dropdown1'>Sort by</a>
+  //
+  //   <ul id='dropdown1' className='dropdown-content black-text'>
+  //     <li><a href="#!">Alphabet</a></li>
+  //     <li><a href="#!">Relevant</a></li>
+  //   </ul>
+  //
+  // </Col>
+  return(
+    <div className="container">
+      <Row className="valign-wrapper">
+        <Col s={1}>
+          <img style={{ height : '50px' }} src={props.img} alt={props.alt} />
+        </Col>
+        <Col style={{ marginLeft: '50px' }} s={11}>
+          <h3 style={{ fontSize: '2em' }}>{props.title}</h3>
+        </Col>
+
+      </Row>
+    </div>
+  )
+}
+
+class Pagination extends Component{
   render(){
     return(
-      <div>
-        <Col s={12} m={2} style={style.header} className="grey lighten-3">
-          <div className="container">
-            hi
-          </div>
-        </Col>
+      <div className="container">
+        <Row>
+          <ul className="col s12 pagination center">
+            <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
+            <li className="active"><a href="#!">1</a></li>
+            <li className="waves-effect"><a href="#!">2</a></li>
+            <li className="waves-effect"><a href="#!">3</a></li>
+            <li className="waves-effect"><a href="#!">4</a></li>
+            <li className="waves-effect"><a href="#!">5</a></li>
+            <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
+          </ul>
+        </Row>
       </div>
     )
   }
 }
 
+class Favorites extends Component{
 
-class Pagination extends Component{
+  render(){
+    let contentTitle = this.props.contentTitle[2], myFavorite = []
+
+    this.props.comics.forEach((favorite) => {
+        myFavorite.push(
+          <Favorite
+            key={favorite.id}
+            title={favorite.title}
+            thumbnail={favorite.thumbnail.path + "/portrait_incredible." + favorite.thumbnail.extension}
+          />
+        )
+      })
+    return(
+      <div>
+        <Col s={12} m={3} style={style.header} className="grey lighten-3">
+          <TitleSection
+            img={contentTitle.titleImg}
+            alt={contentTitle.titleAlt}
+            title={contentTitle.titleText}
+          />
+          <ul className="container">
+            {myFavorite}
+          </ul>
+        </Col>
+      </div>
+    )
+  }
+}
+class Favorite extends Component{
   render(){
     return(
-      <ul className="pagination">
-        <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
-        <li className="active"><a href="#!">1</a></li>
-        <li className="waves-effect"><a href="#!">2</a></li>
-        <li className="waves-effect"><a href="#!">3</a></li>
-        <li className="waves-effect"><a href="#!">4</a></li>
-        <li className="waves-effect"><a href="#!">5</a></li>
-        <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
-      </ul>
+      <li>
+        <img src={this.props.thumbnail} />
+        <p>{this.props.title}</p>
+      </li>
     )
   }
 }
@@ -245,16 +320,7 @@ class Footer extends Component{
           <Row style={style.row}>
             <Col s={12} l={6} style={style.header}>
               <h5 className="white-text">Marvel Character</h5>
-              <p className="grey-text text-lighten-4">This website is only created for educational purposes.</p>
-            </Col>
-            <Col s={12} l={14} offset='l2'>
-              <h5 className="white-text">About Camilo</h5>
-              <ul>
-                <li><a className="grey-text text-lighten-3" href="#!">Facebook</a></li>
-                <li><a className="grey-text text-lighten-3" href="#!">Instagram</a></li>
-                <li><a className="grey-text text-lighten-3" href="#!">Github</a></li>
-                <li><a className="grey-text text-lighten-3" href="#!">Linkedin</a></li>
-              </ul>
+              <p className="grey-text text-lighten-4">This website is only created for educational and for a job application at Grability.</p>
             </Col>
           </Row>
         </div>
@@ -271,7 +337,8 @@ class Footer extends Component{
 
 let style = {
   body:{
-    flex: '1 0 auto'
+    flex: '1 0 auto',
+    backgroundColor: '#eee'
   },
   colorHeader:{
     backgroundColor: 'rgb(45,39,39)',
@@ -303,6 +370,18 @@ const CONTENT = [
   // HEADER
   {
     Logoimg: 'http://camiloarguello.co/img/icons/Marvel-logo.png',
-    Logoalt: 'Logo de Marvel'
+    Logoalt: 'Marvel logo'
+  },
+  // TITLE CHARACTERS
+  {
+    titleImg: 'http://camiloarguello.co/img/icons/characters.png',
+    titleAlt: 'Characters logo',
+    titleText: 'Characters'
+  },
+  // TITLE FAVORITES
+  {
+    titleImg: 'http://camiloarguello.co/img/icons/favourites.png',
+    titleAlt: 'favourites logo',
+    titleText: 'My favourites'
   }
 ]
