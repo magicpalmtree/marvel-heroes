@@ -96,7 +96,7 @@ class Header extends Component{
               <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} />
             </Col>
             <Col s={12} m={9} style={style.header} className="nav-wrapper">
-              <form>
+              <form style={{ backgroundColor: 'rgb(45,39,39)' }}>
                 <div className="input-field">
                   <input id="search" type="search" value={this.props.search} onChange={this.props.onChange}/>
                   <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
@@ -198,11 +198,11 @@ class Character extends Component{
   return(
     <li id={this.props.id} className="card col s12 m12 l5" style={{ margin: '20px' , borderTopLeftRadius: '30%'}} >
 
-      <div style={style.cardHeight} className="col s6 valign-wrapper">
+      <div style={style.cardHeight} className="col s12 m6 valign-wrapper">
         <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt=""/>
       </div>
 
-      <div style={style.cardHeight} className="col s6">
+      <div style={style.cardHeight} className="col s12 m6">
         <h3 className="card-title">{this.props.name}</h3>
         <p style={style.heightText} id="character_description_id">{this.props.description}</p>
 
@@ -392,12 +392,14 @@ let style = {
   },
   colorHeader:{
     backgroundColor: 'rgb(45,39,39)',
+    zIndex: 10,
+    position: 'relative'
   },
   row:{
     marginBottom: 0,
   },
   header:{
-    height: 'auto'
+    height: 'auto',
   },
   imgHeader:{
     height: '50px'
@@ -406,7 +408,7 @@ let style = {
     height: '250px'
   },
   footerCardHeight:{
-    height: '200px'
+    height: '300px'
   },
   liFooterCard:{
     marginTop: '20px'
@@ -437,6 +439,6 @@ const CONTENT = [
   {
     titleImg: 'http://camiloarguello.co/img/icons/favourites.png',
     titleAlt: 'favourites logo',
-    titleText: 'My favourites'
+    titleText: 'My favorites'
   }
 ]
