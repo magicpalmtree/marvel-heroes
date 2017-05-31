@@ -132,38 +132,35 @@ class Body extends Component{
 
 class Characters extends Component{
   render(){
-    let myCharacter = [], contentTitle = this.props.contentTitle[1]
-
+    let myCharacter = [], contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
     this.props.items.forEach((character) => {
+
       if(character.comics.items.length > 4){
-        myCharacter.push(
-          <Character
-            key={character.id}
-            id={character.id}
-            name={character.name}
-            description={character.description}
-            thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
-            comicA={character.comics.items[0].name}
-            comicB={character.comics.items[1].name}
-            comicC={character.comics.items[2].name}
-            comicD={character.comics.items[3].name}
-          />
-        )
+          comicsSimilarA = character.comics.items[0].name
+          comicsSimilarB = character.comics.items[1].name
+          comicsSimilarC = character.comics.items[2].name
+          comicsSimilarD = character.comics.items[3].name
       }else{
-        myCharacter.push(
-          <Character
-            key={character.id}
-            id={character.id}
-            name={character.name}
-            description={character.description}
-            thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
-            comicA={'Related comic name'}
-            comicB={'Related comic name'}
-            comicC={'Related comic name'}
-            comicD={'Related comic name'}
-          />
-        )
+        comicsSimilarA = 'Related comic name'
+        comicsSimilarB = 'Related comic name'
+        comicsSimilarC = 'Related comic name'
+        comicsSimilarD = 'Related comic name'
       }
+
+      myCharacter.push(
+        <Character
+          key={character.id}
+          id={character.id}
+          name={character.name}
+          description={character.description}
+          thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
+          comicB={comicsSimilarA}
+          comicC={comicsSimilarB}
+          comicA={comicsSimilarC}
+          comicD={comicsSimilarD}
+        />
+      )
+
     })
 
     return(
@@ -182,10 +179,6 @@ class Characters extends Component{
       </div>
     )
   }
-}
-
-function getData(data){
-  return data
 }
 
 class Character extends Component{
@@ -236,14 +229,10 @@ class Character extends Component{
     <li id={this.props.id} className="card col s12 m12 l5" style={{ margin: '20px' , borderTopLeftRadius: '30%'}} >
 
       <div style={style.cardHeight} className="col s12 m6 valign-wrapper">
-        <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt=""/>
+        <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt="" />
       </div>
-<<<<<<< HEAD
 
       <div style={style.cardHeight} className="col s12 m6">
-=======
-      <div style={style.cardHeight} className="col s6">
->>>>>>> modal
         <h3 className="card-title">{this.props.name}</h3>
         <p style={style.heightText}>{this.props.description}</p>
         <a
