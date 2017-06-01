@@ -201,7 +201,6 @@ class Body extends Component{
 class Characters extends Component{
   constructor(props){
     super(props)
-    console.log(this.props)
     this.state = {
       mySelected : false,
       mySelectId : '',
