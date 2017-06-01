@@ -105,12 +105,12 @@ export default class Main extends Component {
     }
   }
   clickComic(event){
-    // console.log(event._targetInst)
+    console.log(event._targetInst._hostNode.id)
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    marvel.comics.find('21366')
+    marvel.comics.find(event._targetInst._hostNode.id)
       .then(console.log)
       .fail(console.error)
       .done();
@@ -212,9 +212,8 @@ class Characters extends Component{
       mySelectDescription: ''
     }
     this.showCharacter = this.showCharacter.bind(this)
-    this.clickComic2 = this.clickComic2.bind(this)
   }
-  showCharacter(event){
+  showCharacter(event){ // trigger the modal
     event.preventDefault();
     let mySelection = event._targetInst._currentElement._owner._instance.props
 
@@ -230,18 +229,25 @@ class Characters extends Component{
 
     // console.log(event._targetInst._currentElement._owner._instance.props)
   }
-  clickComic2(event){
-    console.log(event._targetInst)
-  }
-  render(){
-    let myCharacter = [], myComicSearchId, contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
-    this.props.items.forEach((character) => {
 
+  render(){
+    let myCharacter = [],
+        myComicSearchIdA,
+        myComicSearchIdB,
+        myComicSearchIdC,
+        myComicSearchIdD,
+        contentTitle = this.props.contentTitle[1],
+        comicsSimilarA,
+        comicsSimilarB,
+        comicsSimilarC,
+        comicsSimilarD
+    this.props.items.forEach((character) => {
       if(character.comics.items.length > 4){
           myComicSearchIdA = character.comics.items[0].resourceURI.match(/([^\/]*)\/*$/)[1]
           myComicSearchIdB = character.comics.items[1].resourceURI.match(/([^\/]*)\/*$/)[1]
           myComicSearchIdC = character.comics.items[2].resourceURI.match(/([^\/]*)\/*$/)[1]
           myComicSearchIdD = character.comics.items[3].resourceURI.match(/([^\/]*)\/*$/)[1]
+
           comicsSimilarA = character.comics.items[0].name
           comicsSimilarB = character.comics.items[1].name
           comicsSimilarC = character.comics.items[2].name
@@ -252,7 +258,6 @@ class Characters extends Component{
         comicsSimilarC = 'Related comic name'
         comicsSimilarD = 'Related comic name'
       }
-
       myCharacter.push(
         <Character
           key={character.id}
@@ -261,10 +266,14 @@ class Characters extends Component{
           description={character.description}
           thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
           showCharacter={this.showCharacter}
-          onClick={this.clickComic2}
-          comicB={comicsSimilarA}
-          comicC={comicsSimilarB}
-          comicA={comicsSimilarC}
+          onClick={this.props.clickComic}
+          comicAid={myComicSearchIdA}
+          comicA={comicsSimilarA}
+          comicBid={myComicSearchIdB}
+          comicB={comicsSimilarB}
+          comicCid={myComicSearchIdC}
+          comicC={comicsSimilarC}
+          comicDid={myComicSearchIdD}
           comicD={comicsSimilarD}
         />
       )
@@ -326,7 +335,6 @@ class Character extends Component{
         <p style={style.heightText}>{this.props.description}</p>
         <a
           className="waves-effect waves-light btn red"
-          onClick={this.props.showCharacter}
         >
           View More
         </a>
@@ -337,8 +345,8 @@ class Character extends Component{
         <ul className="col s6">
           <li>
             <a
-              href="#modal1"
-              className="modal-trigger"
+              href="#"
+              id={this.props.comicAid}
               onClick={this.props.onClick}
             >
               {this.props.comicA}
@@ -346,8 +354,8 @@ class Character extends Component{
           </li>
           <li style={style.liFooterCard}>
             <a
-              href="#modal1"
-              className="modal-trigger"
+              href="#"
+              id={this.props.comicBid}
               onClick={this.props.onClick}
             >
               {this.props.comicB}
@@ -357,8 +365,8 @@ class Character extends Component{
         <ul className="col s6">
           <li>
             <a
-              href="#modal1"
-              className="modal-trigger"
+              href="#"
+              id={this.props.comicCid}
               onClick={this.props.onClick}
             >
               {this.props.comicC}
@@ -366,8 +374,8 @@ class Character extends Component{
           </li>
           <li style={style.liFooterCard}>
             <a
-              href="#modal1"
-              className="modal-trigger"
+              href="#"
+              id={this.props.comicDid}
               onClick={this.props.onClick}
             >
               {this.props.comicD}
@@ -379,31 +387,6 @@ class Character extends Component{
     </li>
   )
   }
-}
-
-function TitleSection(props){
-  // <Col s={3}>
-  //   <a className='dropdown-button btn white black-text' href='#' data-activates='dropdown1'>Sort by</a>
-  //
-  //   <ul id='dropdown1' className='dropdown-content black-text'>
-  //     <li><a href="#!">Alphabet</a></li>
-  //     <li><a href="#!">Relevant</a></li>
-  //   </ul>
-  //
-  // </Col>
-  return(
-    <div className="container">
-      <Row className="valign-wrapper">
-        <Col s={1}>
-          <img style={{ height : '50px' }} src={props.img} alt={props.alt} />
-        </Col>
-        <Col style={{ marginLeft: '50px' }} s={11}>
-          <h3 style={{ fontSize: '2em' }}>{props.title}</h3>
-        </Col>
-
-      </Row>
-    </div>
-  )
 }
 
 class Paginations extends Component{
@@ -506,6 +489,22 @@ class SelectComic extends Component{
       </div>
     )
   }
+}
+
+function TitleSection(props){
+  return(
+    <div className="container">
+      <Row className="valign-wrapper">
+        <Col s={1}>
+          <img style={{ height : '50px' }} src={props.img} alt={props.alt} />
+        </Col>
+        <Col style={{ marginLeft: '50px' }} s={11}>
+          <h3 style={{ fontSize: '2em' }}>{props.title}</h3>
+        </Col>
+
+      </Row>
+    </div>
+  )
 }
 
 class Footer extends Component{
