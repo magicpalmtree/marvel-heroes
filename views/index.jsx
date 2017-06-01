@@ -9,6 +9,7 @@ export default class Main extends Component {
     this.state = {
       items : [],
       comics: [],
+      selectComic: [],
       search : ''
     }
     this.searchSuper = this.searchSuper.bind(this)
@@ -105,13 +106,12 @@ export default class Main extends Component {
     }
   }
   clickComic(event){
-    console.log(event._targetInst._hostNode.id)
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
     marvel.comics.find(event._targetInst._hostNode.id)
-      .then(console.log)
+      .then(result => { this.setState({selectComic: result.data}) })
       .fail(console.error)
       .done();
   }
@@ -128,6 +128,7 @@ export default class Main extends Component {
             comics={this.state.comics}
             paginationN={this.paginationNumber}
             clickComic={this.clickComic}
+            selectComic={this.state.selectComic[0]}
             />
           <Footer />
       </div>
@@ -185,6 +186,7 @@ class Body extends Component{
             items={this.props.items}
             comics={this.props.comics}
             clickComic={this.props.clickComic}
+            selectComic={this.props.selectComic}
             contentTitle={CONTENT}
             />
 
@@ -204,32 +206,7 @@ class Body extends Component{
 class Characters extends Component{
   constructor(props){
     super(props)
-    this.state = {
-      mySelected : false,
-      mySelectId : '',
-      mySelectImg: '',
-      mySelectName: '',
-      mySelectDescription: ''
-    }
-    this.showCharacter = this.showCharacter.bind(this)
   }
-  showCharacter(event){ // trigger the modal
-    event.preventDefault();
-    let mySelection = event._targetInst._currentElement._owner._instance.props
-
-    this.setState(
-      {
-        mySelected : true,
-        mySelectId : mySelection.id,
-        mySelectImg: mySelection.thumbnail,
-        mySelectName: mySelection.name,
-        mySelectDescription: mySelection.description
-      }
-    )
-
-    // console.log(event._targetInst._currentElement._owner._instance.props)
-  }
-
   render(){
     let myCharacter = [],
         myComicSearchIdA,
@@ -265,7 +242,6 @@ class Characters extends Component{
           name={character.name}
           description={character.description}
           thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
-          showCharacter={this.showCharacter}
           onClick={this.props.clickComic}
           comicAid={myComicSearchIdA}
           comicA={comicsSimilarA}
@@ -278,23 +254,22 @@ class Characters extends Component{
         />
       )
     })
+    let mySelectedComic
 
-    let selectComicModal
-
-    if(this.state.mySelected){
-      selectComicModal = <SelectComic
-                                id={this.state.mySelectId}
-                                img={this.state.mySelectImg}
-                                name={this.state.mySelectName}
-                                description={this.state.mySelectDescription}
-                              />
+    if(this.props.selectComic){
+      mySelectedComic = <SelectComic
+                         id={this.props.selectComic.id}
+                         img={this.props.selectComic.thumbnail.path + "/portrait_fantastic." + this.props.selectComic.thumbnail.extension}
+                         name={this.props.selectComic.title}
+                         description={this.props.selectComic.description}
+                       />
     }else{
-      selectComicModal = <SelectComic
-                                id="noid"
-                                img="noimg"
-                                name="notext"
-                                description="nodescription"
-                              />
+      mySelectedComic = <SelectComic
+                         id="noid"
+                         img="no_image"
+                         name="no title"
+                         description="no description"
+                       />
     }
 
     return(
@@ -308,7 +283,7 @@ class Characters extends Component{
           <ul className="container">
             {myCharacter}
           </ul>
-          {selectComicModal}
+          {mySelectedComic}
         </Col>
       </div>
     )
@@ -345,8 +320,9 @@ class Character extends Component{
         <ul className="col s6">
           <li>
             <a
-              href="#"
+              href="#modal1"
               id={this.props.comicAid}
+              className="modal-trigger black-text"
               onClick={this.props.onClick}
             >
               {this.props.comicA}
@@ -354,8 +330,9 @@ class Character extends Component{
           </li>
           <li style={style.liFooterCard}>
             <a
-              href="#"
+              href="#modal1"
               id={this.props.comicBid}
+              className="modal-trigger black-text"
               onClick={this.props.onClick}
             >
               {this.props.comicB}
@@ -365,8 +342,9 @@ class Character extends Component{
         <ul className="col s6">
           <li>
             <a
-              href="#"
+              href="#modal1"
               id={this.props.comicCid}
+              className="modal-trigger black-text"
               onClick={this.props.onClick}
             >
               {this.props.comicC}
@@ -374,8 +352,9 @@ class Character extends Component{
           </li>
           <li style={style.liFooterCard}>
             <a
-              href="#"
+              href="#modal1"
               id={this.props.comicDid}
+              className="modal-trigger black-text"
               onClick={this.props.onClick}
             >
               {this.props.comicD}
