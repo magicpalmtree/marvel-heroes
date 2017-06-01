@@ -473,7 +473,6 @@ class Favorites extends Component{
 class Favorite extends Component{
   constructor(props){
     super(props)
-    this.onHover = this.onHover.bind(this)
   }
   render(){
     return(
