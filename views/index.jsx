@@ -10,11 +10,15 @@ export default class Main extends Component {
       items : [],
       comics: [],
       selectComic: [],
-      search : ''
+      search : '',
+      idFav: '',
+      isToggleOn: false
     }
     this.searchSuper = this.searchSuper.bind(this)
     this.paginationNumber = this.paginationNumber.bind(this)
     this.clickComic = this.clickComic.bind(this)
+    this.deleteFavorite = this.deleteFavorite.bind(this)
+    this.addFavorite = this.addFavorite.bind(this)
   }
   componentDidMount(){
     let myBody = document.getElementById("app")
@@ -37,7 +41,6 @@ export default class Main extends Component {
 
       marvel.comics.findAll(5, getRandomInt(20,50) )
         .then((result) => {
-          // console.log(result.data)
           this.setState({
             comics : result.data
           })
@@ -106,6 +109,9 @@ export default class Main extends Component {
     }
   }
   clickComic(event){
+    this.setState({
+      idFav: event._targetInst._hostNode.id
+    })
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
@@ -115,6 +121,33 @@ export default class Main extends Component {
       .fail(console.error)
       .done();
   }
+  deleteFavorite(event){
+    let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
+    myDelete.style.display = 'none';
+  }
+  addFavorite(event){
+    event.preventDefault()
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+
+    let marvel = api.createClient({
+      publicKey: this.props.data[0].a,
+      privateKey: this.props.data[0].b
+    })
+    if(!this.state.isToggleOn){
+      marvel.comics.find(this.state.idFav)
+        .then((result) => {
+          this.setState({
+            comics : result.data
+          })
+        }
+        )
+        .fail(console.error)
+        .done();
+    }
+  }
+
   render(){
     return(
       <div style={style.body}>
@@ -127,8 +160,11 @@ export default class Main extends Component {
             items={this.state.items}
             comics={this.state.comics}
             paginationN={this.paginationNumber}
+            deleteFavorite={this.deleteFavorite}
             clickComic={this.clickComic}
             selectComic={this.state.selectComic[0]}
+            isToggleOn={this.state.isToggleOn}
+            addFavorite={this.addFavorite}
             />
           <Footer />
       </div>
@@ -142,10 +178,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-//
-// Header.propTypes = {
-//     title: React.PropTypes.string.isRequired
-// };
 
 class Header extends Component{
   constructor(props){
@@ -187,11 +219,15 @@ class Body extends Component{
             comics={this.props.comics}
             clickComic={this.props.clickComic}
             selectComic={this.props.selectComic}
+            isToggleOn={this.props.isToggleOn}
+            addFavorite={this.props.addFavorite}
             contentTitle={CONTENT}
             />
 
           <Favorites
+            deleteFavorite={this.props.deleteFavorite}
             comics={this.props.comics}
+            selectComic={this.props.selectComic}
             contentTitle={CONTENT}
           />
           <Paginations
@@ -262,6 +298,8 @@ class Characters extends Component{
                          img={this.props.selectComic.thumbnail.path + "/portrait_fantastic." + this.props.selectComic.thumbnail.extension}
                          name={this.props.selectComic.title}
                          description={this.props.selectComic.description}
+                         isToggleOn={this.props.isToggleOn}
+                         addFavorite={this.props.addFavorite}
                        />
     }else{
       mySelectedComic = <SelectComic
@@ -369,9 +407,6 @@ class Character extends Component{
 }
 
 class Paginations extends Component{
-  constructor(props){
-    super(props)
-  }
   render(){
     return(
       <div className="container">
@@ -386,14 +421,6 @@ class Paginations extends Component{
 }
 
 class Favorites extends Component{
-  constructor(props){
-    super(props)
-    this.deleteFavorite = this.deleteFavorite.bind(this)
-  }
-  deleteFavorite(event){
-    let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
-    myDelete.style.display = 'none';
-  }
   render(){
     let contentTitle = this.props.contentTitle[2], myFavorite = []
 
@@ -404,7 +431,7 @@ class Favorites extends Component{
             id={favorite.id}
             title={favorite.title}
             thumbnail={favorite.thumbnail.path + "/portrait_fantastic." + favorite.thumbnail.extension}
-            onClick={this.deleteFavorite}
+            onClick={this.props.deleteFavorite}
           />
         )
       })
@@ -451,20 +478,6 @@ class Favorite extends Component{
 }
 
 class SelectComic extends Component{
-  constructor(props){
-    super(props)
-    this.state ={
-      isToggleOn: false,
-      isToggleOn2: false,
-    }
-    this.addFavorite = this.addFavorite.bind(this)
-  }
-  addFavorite(){
-    this.setState(prevState => ({
-      isToggleOn: !prevState.isToggleOn,
-      isToggleOn2: !prevState.isToggleOn2
-    }))
-  }
   render(){
     let myFavoriteOn = <div>
                           <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
@@ -482,24 +495,6 @@ class SelectComic extends Component{
                             <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'red' }}>Added to Favorites</p>
                           </Col>
                         </div>
-
-    let myFavoriteNoBuy = <div>
-                          <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
-                            <img src="http://camiloarguello.co/img/icons/shopping-cart-primary.png" />
-                          </Col>
-                          <Col s={10}>
-                            <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'black' }}>Buy for $3,99</p>
-                          </Col>
-                        </div>
-    let myFavoriteBuy = <div>
-                          <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
-                            <img src="http://camiloarguello.co/img/icons/shopping-cart-primary.png" />
-                          </Col>
-                          <Col s={10}>
-                            <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'red' }}>Bought</p>
-                          </Col>
-                        </div>
-
 
     return(
       <div id="modal1" className="modal">
@@ -523,11 +518,16 @@ class SelectComic extends Component{
         <div className="modal-footer" style={{ padding: '0', height: 'auto' }}>
           <div className="row center" style={{ marginBottom: '0px' }}>
             <Col s={12} m={6} className="grey lighten-2 btn-large waves-effect waves-light">
-              { myFavoriteNoBuy }
+              <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
+                <img src="http://camiloarguello.co/img/icons/shopping-cart-primary.png" />
+              </Col>
+              <Col s={10}>
+                <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'black' }}>Buy for $3,99</p>
+              </Col>
             </Col>
-            <Col s={12} m={6} className="grey lighten-3 btn-large waves-effect waves-light" onClick={this.addFavorite}>
-              { this.state.isToggleOn ? myFavoriteOff : myFavoriteOn }
-            </Col>            
+            <Col s={12} m={6} className="grey lighten-3 btn-large waves-effect waves-light" onClick={this.props.addFavorite}>
+              { this.props.isToggleOn ? myFavoriteOff : myFavoriteOn }
+            </Col>
           </div>
         </div>
       </div>
