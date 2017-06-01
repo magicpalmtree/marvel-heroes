@@ -453,17 +453,82 @@ class Favorite extends Component{
 class SelectComic extends Component{
   constructor(props){
     super(props)
+    this.state ={
+      isToggleOn: false,
+      isToggleOn2: false,
+    }
+    this.addFavorite = this.addFavorite.bind(this)
+  }
+  addFavorite(){
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn,
+      isToggleOn2: !prevState.isToggleOn2
+    }))
   }
   render(){
+    let myFavoriteOn = <div>
+                          <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
+                            <img src="http://camiloarguello.co/img/icons/btn-favourites-default.png" />
+                          </Col>
+                          <Col s={10}>
+                            <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'black' }}>Add to Favorites</p>
+                          </Col>
+                        </div>
+    let myFavoriteOff = <div>
+                          <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
+                            <img src="http://camiloarguello.co/img/icons/btn-favourites-primary.png" />
+                          </Col>
+                          <Col s={10}>
+                            <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'red' }}>Added to Favorites</p>
+                          </Col>
+                        </div>
+
+    let myFavoriteNoBuy = <div>
+                          <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
+                            <img src="http://camiloarguello.co/img/icons/shopping-cart-primary.png" />
+                          </Col>
+                          <Col s={10}>
+                            <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'black' }}>Buy for $3,99</p>
+                          </Col>
+                        </div>
+    let myFavoriteBuy = <div>
+                          <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
+                            <img src="http://camiloarguello.co/img/icons/shopping-cart-primary.png" />
+                          </Col>
+                          <Col s={10}>
+                            <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'red' }}>Bought</p>
+                          </Col>
+                        </div>
+
+
     return(
-      <div id="modal1" className="modal modal-fixed-footer">
+      <div id="modal1" className="modal">
         <div className="modal-content">
-          <h4>{this.props.name}</h4>
-          <img src={this.props.img} />
-          <p>{this.props.description}</p>
+        <a
+          className="modal-action modal-close btn-floating btn-large waves-effect waves-light black"
+          style={{ position: 'absolute', position: 'absolute', width: 30, height: 30, top: '20px' , right: '20px' }}
+        >
+          <i style={{ lineHeight: '30px' }} className="fa fa-times" aria-hidden="true"></i>
+        </a>
+          <Row>
+            <Col s={12} m={4}>
+              <img src={this.props.img} />
+            </Col>
+            <Col s={12} m={8}>
+              <h4>{this.props.name}</h4>
+              <p>{this.props.description}</p>
+            </Col>
+          </Row>
         </div>
-        <div className="modal-footer">
-          <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        <div className="modal-footer" style={{ padding: '0', height: 'auto' }}>
+          <div className="row center" style={{ marginBottom: '0px' }}>
+            <Col s={12} m={6} className="grey lighten-2 btn-large waves-effect waves-light">
+              { myFavoriteNoBuy }
+            </Col>
+            <Col s={12} m={6} className="grey lighten-3 btn-large waves-effect waves-light" onClick={this.addFavorite}>
+              { this.state.isToggleOn ? myFavoriteOff : myFavoriteOn }
+            </Col>            
+          </div>
         </div>
       </div>
     )
