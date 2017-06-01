@@ -484,7 +484,6 @@ class Favorite extends Component{
       >
         <a
           onClick={this.props.onClick}
-          onMouseEnter={this.onHover}
           className="btn-floating btn-large waves-effect waves-light black"
           style={{ position: 'absolute', margin: '-20px 190px' }}
         >
