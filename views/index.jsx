@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import api from 'marvel-api'
 import { Pagination,Button, Icon, Card, Row, Col } from 'react-materialize'
 import { reactLocalStorage } from 'reactjs-localstorage'
+import { CSSTransitionGroup } from 'react-transition-group'
+import { bounce, fadeIn } from 'react-animations'
+import Radium from 'radium'
 
 export default class Main extends Component {
   constructor(props){
@@ -253,6 +256,7 @@ class Body extends Component{
   }
 }
 
+
 class Characters extends Component{
   constructor(props){
     super(props)
@@ -357,10 +361,11 @@ class Character extends Component{
         <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt="" />
       </div>
 
-      <div style={style.cardHeight} className="col s12 m6">
+      <div style={style.cardBody} className="col s12 m6 sidebar-box">
         <h3 className="card-title">{this.props.name}</h3>
-        <p style={style.heightText}>{this.props.description}</p>
+        <p className="myIdTest" style={style.heightText}>{this.props.description}</p>
         <a
+          style={{ fontSize: '0.8em' }}
           className="waves-effect waves-light btn red"
         >
           View More
@@ -475,21 +480,23 @@ class Favorite extends Component{
     super(props)
   }
   render(){
+    console.log(style.bounce)
+          //  style={{ marginTop: '100px' }}
     return(
       <li
         id={this.props.id}
         className="center"
-        style={{ marginTop: '100px' }}
+        style={style.bounce}
       >
-        <a
-          onClick={this.props.onClick}
-          className="btn-floating btn-large waves-effect waves-light black"
-          style={{ position: 'absolute', margin: '-20px 190px' }}
-        >
-          <i className="fa fa-trash" aria-hidden="true"></i>
-        </a>
-        <img style={{ width: '230px' }} src={this.props.thumbnail} />
-        <h5><b>{this.props.title}</b></h5>
+          <a
+            onClick={this.props.onClick}
+            className="btn-floating btn-large waves-effect waves-light black"
+            style={{ position: 'absolute', margin: '-20px 190px' }}
+          >
+            <i className="fa fa-trash" aria-hidden="true"></i>
+          </a>
+          <img style={{ width: '230px' }} src={this.props.thumbnail} />
+          <h5><b>{this.props.title}</b></h5>          
       </li>
     )
   }
@@ -592,7 +599,7 @@ class Footer extends Component{
   }
 }
 
-let style = {
+const style = {
   body:{
     flex: '1 0 auto',
     backgroundColor: '#eee'
@@ -614,6 +621,13 @@ let style = {
   cardHeight:{
     height: '250px'
   },
+  cardBody:{
+    position: 'relativa',
+    overflow: 'hidden',
+  },
+  readMore:{
+    textAlign: 'center',
+  },
   footerCardHeight:{
     height: '300px'
   },
@@ -627,8 +641,14 @@ let style = {
     position: 'relative',
     bottom: 0,
     backgroundColor: 'rgb(45,39,39)'
-  }
+  },
+  bounce: {
+    animation: 'x 1s',
+    animationName: Radium.keyframes(bounce, 'bounce')
+  }  
 }
+
+
 
 const CONTENT = [
   // HEADER
