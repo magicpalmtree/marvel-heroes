@@ -36,10 +36,12 @@ export default class Main extends Component {
 
       marvel.comics.findAll(5, getRandomInt(20,50) )
         .then((result) => {
+          // console.log(result.data)
           this.setState({
             comics : result.data
           })
-        })
+        }
+        )
         .fail(console.error)
         .done();
   }
@@ -103,11 +105,12 @@ export default class Main extends Component {
     }
   }
   clickComic(event){
+    // console.log(event._targetInst)
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    marvel.comics.find('4110')
+    marvel.comics.find('21366')
       .then(console.log)
       .fail(console.error)
       .done();
@@ -209,10 +212,12 @@ class Characters extends Component{
       mySelectDescription: ''
     }
     this.showCharacter = this.showCharacter.bind(this)
+    this.clickComic2 = this.clickComic2.bind(this)
   }
   showCharacter(event){
     event.preventDefault();
     let mySelection = event._targetInst._currentElement._owner._instance.props
+
     this.setState(
       {
         mySelected : true,
@@ -225,11 +230,18 @@ class Characters extends Component{
 
     // console.log(event._targetInst._currentElement._owner._instance.props)
   }
+  clickComic2(event){
+    console.log(event._targetInst)
+  }
   render(){
-    let myCharacter = [], contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
+    let myCharacter = [], myComicSearchId, contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
     this.props.items.forEach((character) => {
 
       if(character.comics.items.length > 4){
+          myComicSearchIdA = character.comics.items[0].resourceURI.match(/([^\/]*)\/*$/)[1]
+          myComicSearchIdB = character.comics.items[1].resourceURI.match(/([^\/]*)\/*$/)[1]
+          myComicSearchIdC = character.comics.items[2].resourceURI.match(/([^\/]*)\/*$/)[1]
+          myComicSearchIdD = character.comics.items[3].resourceURI.match(/([^\/]*)\/*$/)[1]
           comicsSimilarA = character.comics.items[0].name
           comicsSimilarB = character.comics.items[1].name
           comicsSimilarC = character.comics.items[2].name
@@ -249,7 +261,7 @@ class Characters extends Component{
           description={character.description}
           thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
           showCharacter={this.showCharacter}
-          onClick={this.props.clickComic}
+          onClick={this.clickComic2}
           comicB={comicsSimilarA}
           comicC={comicsSimilarB}
           comicA={comicsSimilarC}
@@ -410,6 +422,7 @@ class Paginations extends Component{
     )
   }
 }
+
 class Favorites extends Component{
   constructor(props){
     super(props)
@@ -449,6 +462,7 @@ class Favorites extends Component{
     )
   }
 }
+
 class Favorite extends Component{
   constructor(props){
     super(props)
@@ -493,7 +507,6 @@ class SelectComic extends Component{
     )
   }
 }
-
 
 class Footer extends Component{
   render(){
