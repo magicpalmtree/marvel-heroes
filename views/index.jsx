@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import api from 'marvel-api'
 import { Pagination,Button, Icon, Card, Row, Col } from 'react-materialize'
-// import Pagination from '../components/Pagination'
+import { reactLocalStorage } from 'reactjs-localstorage'
 
 export default class Main extends Component {
   constructor(props){
@@ -48,6 +48,19 @@ export default class Main extends Component {
         )
         .fail(console.error)
         .done();
+
+      if(reactLocalStorage.getObject('comicsFavoritos')){
+        marvel.comics.find(reactLocalStorage.getObject('comicsFavoritos').comic)
+          .then((result) => {
+            this.setState({
+              comics : result.data
+            })
+          }
+          )
+          .fail(console.error)
+          .done();
+
+      }
   }
   searchSuper(event){
     this.setState({
@@ -211,6 +224,7 @@ class Header extends Component{
 
 class Body extends Component{
   render(){
+
     return(
       <section>
         <Row style={style.row}>
@@ -425,6 +439,10 @@ class Favorites extends Component{
     let contentTitle = this.props.contentTitle[2], myFavorite = []
 
     this.props.comics.forEach((favorite) => {
+      reactLocalStorage.set('comicsFavoritos', true)
+      reactLocalStorage.get('comicsFavoritos',true)
+      reactLocalStorage.setObject('comicsFavoritos', {'comic': favorite.id })
+      reactLocalStorage.getObject('comicsFavoritos')
         myFavorite.push(
           <Favorite
             key={favorite.id}
@@ -455,6 +473,7 @@ class Favorites extends Component{
 class Favorite extends Component{
   constructor(props){
     super(props)
+    this.onHover = this.onHover.bind(this)
   }
   render(){
     return(
@@ -465,6 +484,7 @@ class Favorite extends Component{
       >
         <a
           onClick={this.props.onClick}
+          onMouseEnter={this.onHover}
           className="btn-floating btn-large waves-effect waves-light black"
           style={{ position: 'absolute', margin: '-20px 190px' }}
         >

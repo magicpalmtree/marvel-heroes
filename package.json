@@ -31,7 +31,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-js-pagination": "^2.1.0",
-    "react-materialize": "^1.0.1"
+    "react-materialize": "^1.0.1",
+    "reactjs-localstorage": "0.0.5"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
