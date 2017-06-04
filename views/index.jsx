@@ -66,7 +66,6 @@ export default class Main extends Component {
           )
           .fail(console.error)
           .done();
-
       }
   }
   searchSuper(event){
