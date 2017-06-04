@@ -35,10 +35,10 @@ export default class Characters extends Component{
           comicsSimilarC = character.comics.items[2].name
           comicsSimilarD = character.comics.items[3].name
       }else{
-        comicsSimilarA = 'Related comic name'
-        comicsSimilarB = 'Related comic name'
-        comicsSimilarC = 'Related comic name'
-        comicsSimilarD = 'Related comic name'
+        comicsSimilarA = 'Related comic name two lines'
+        comicsSimilarB = 'Related comic name two lines'
+        comicsSimilarC = 'Related comic name two lines'
+        comicsSimilarD = 'Related comic name two lines'
       }
       myCharacter.push(
         <Character
@@ -106,14 +106,14 @@ class Character extends Component{
   }
   render(){
   return(
-    <li id={this.props.id} className="card col s12 m12 l5" style={{ margin: '20px' , borderTopLeftRadius: '30%'}} >
+    <li style={style.liCard}  id={this.props.id} className="card col s12 m12 l5" >
 
       <div style={style.cardHeight} className="col s12 m6 valign-wrapper">
-        <img style={{ marginLeft: '-30px', width: '300px', boxShadow: '4px 4px 8px #888888'}} className="circle" src={this.props.thumbnail} alt="" />
+        <img style={style.imgCard} className="circle" src={this.props.thumbnail} alt="" />
       </div>
 
       <div style={style.cardBody} className="col s12 m6 sidebar-box">
-        <h3 className="card-title">{this.props.name}</h3>
+        <h3 style={style.h3Card} className="card-title"><b>{this.props.name}</b></h3>
         <p className="myIdTest" style={style.heightText}>{this.props.description}</p>
         <a
           style={{ fontSize: '0.8em' }}
@@ -132,6 +132,7 @@ class Character extends Component{
               id={this.props.comicAid}
               className="modal-trigger black-text"
               onClick={this.props.onClick}
+              style={style.aCardFooter}
             >
               {this.props.comicA}
             </a>
@@ -142,6 +143,7 @@ class Character extends Component{
               id={this.props.comicBid}
               className="modal-trigger black-text"
               onClick={this.props.onClick}
+              style={style.aCardFooter}
             >
               {this.props.comicB}
             </a>
@@ -154,6 +156,7 @@ class Character extends Component{
               id={this.props.comicCid}
               className="modal-trigger black-text"
               onClick={this.props.onClick}
+              style={style.aCardFooter}
             >
               {this.props.comicC}
             </a>
@@ -164,6 +167,7 @@ class Character extends Component{
               id={this.props.comicDid}
               className="modal-trigger black-text"
               onClick={this.props.onClick}
+              style={style.aCardFooter}
             >
               {this.props.comicD}
             </a>
@@ -175,6 +179,10 @@ class Character extends Component{
   )
   }
 }
+
+
+
+
 
 class SelectComic extends Component{
   render(){
@@ -250,17 +258,32 @@ const style = {
   row:{
     marginBottom: 0,
   },
+  liCard:{
+    margin: '20px'
+  },
   imgHeader:{
     height: '50px'
   },
+  imgCard:{
+    marginLeft: '-30px',
+    width: '300px',
+    boxShadow: '4px 4px 8px #888888'
+  },
   cardHeight:{
     height: '250px'
+  },
+  h3Card:{
+    margin: '0.5rem',
+    textTransform: 'uppercase'
+  },
+  aCardFooter:{
+    fontSize: '1.1em'
   },
   readMore:{
     textAlign: 'center',
   },
   footerCardHeight:{
-    height: '300px'
+    padding: '30px 10px'
   },
   liFooterCard:{
     marginTop: '20px'

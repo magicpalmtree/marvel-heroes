@@ -19,7 +19,7 @@ export default class Header extends Component{
             <Col s={12} m={3} style={style.header} >
               <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} />
             </Col>
-            <Col s={12} m={9} style={style.header} className="nav-wrapper">
+            <Col s={12} m={9} className="nav-wrapper">
               <form style={{ backgroundColor: 'rgb(45,39,39)' }}>
                 <div className="input-field">
                   <input id="search" placeholder="Search character..." type="search" value={this.props.search} onChange={this.props.onChange}/>
