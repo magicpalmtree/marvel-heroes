@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import api from 'marvel-api'
 import { Pagination,Button, Icon, Card, Row, Col, Footer } from 'react-materialize'
 import { reactLocalStorage } from 'reactjs-localstorage'
-import TitleSection from './TitleSection.jsx'
+import TitleSection from '../TitleSection.jsx'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { bounce, fadeIn } from 'react-animations'
 import Radium from 'radium'
@@ -233,8 +233,6 @@ class SelectComic extends Component{
     )
   }
 }
-
-
 
 const style = {
   header:{
