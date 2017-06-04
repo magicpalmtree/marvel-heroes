@@ -24,11 +24,10 @@ export default class Character extends Component{
       }
   return(
     <li style={style.liCard}  id={this.props.id} className="card col s12 m12 l5" >
-
       <div className="col s12 m6 valign-wrapper">
         <img style={style.imgCard} className="circle" src={this.props.thumbnail} alt="" />
       </div>
-
+      
       <div style={style.cardBody} className="col s12 m6 sidebar-box">
         <h3 style={style.h3Card} className="card-title"><b>{this.props.name}</b></h3>
 
@@ -108,7 +107,8 @@ const NODESCRIPTION = [
 
 const style = {
   liCard:{
-    margin: '20px'
+    margin: '20px',
+    height: '400px'
   },
   descriptionCard:{
     maxHeight: '100px', 
@@ -141,10 +141,10 @@ const style = {
     textAlign: 'center',
   },
   footerCardHeight:{
-    padding: '30px 10px'
+    padding: '10px 10px'
   },
   liFooterCard:{
-    marginTop: '20px'
+    marginTop: '10px'
   },
   heightText:{
     fontSize: '0.8em',
