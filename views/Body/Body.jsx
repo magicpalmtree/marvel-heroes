@@ -15,22 +15,24 @@ export default class Body extends Component{
     return(
       <section>
         <Row style={style.row}>
-           <Characters
-            items={this.props.items}
-            comics={this.props.comics}
-            clickComic={this.props.clickComic}
-            selectComic={this.props.selectComic}
-            isToggleOn={this.props.isToggleOn}
-            addFavorite={this.props.addFavorite}
-            contentTitle={CONTENT}
+
+            <Characters
+              items={this.props.items}
+              comics={this.props.comics}
+              clickComic={this.props.clickComic}
+              selectComic={this.props.selectComic}
+              isToggleOn={this.props.isToggleOn}
+              addFavorite={this.props.addFavorite}
+              contentTitle={CONTENT}
             />
 
-          <Favorites
-            deleteFavorite={this.props.deleteFavorite}
-            comics={this.props.comics}
-            selectComic={this.props.selectComic}
-            contentTitle={CONTENT}
-          />
+            <Favorites
+              deleteFavorite={this.props.deleteFavorite}
+              comics={this.props.comics}
+              selectComic={this.props.selectComic}
+              contentTitle={CONTENT}
+            />          
+
           <Paginations
             onClick={this.props.paginationN}
           />
@@ -39,7 +41,6 @@ export default class Body extends Component{
     )
   }
 }
-
 
 const style = {
   row:{
