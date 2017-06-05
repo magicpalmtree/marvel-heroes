@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import api from 'marvel-api'
-import { Pagination,Button, Icon, Card, Row, Col, Footer } from 'react-materialize'
+import { Pagination,Button, Icon, Card, Row, Col, Footer, Preloader } from 'react-materialize'
 import { reactLocalStorage } from 'reactjs-localstorage'
 import Header from './Header/Header.jsx'
 import Body from './Body/Body.jsx'
@@ -14,6 +14,7 @@ export default class Main extends Component {
   constructor(props){
     super(props)
     this.state = {
+      isReady: false,
       items : [],
       comics: [],
       selectComic: [],
@@ -47,15 +48,18 @@ export default class Main extends Component {
         })
       })
       .fail(console.error)
-      .done()
-        
+      .done(
+        this.setState({
+          isReady: true
+        })
+      )
 
       if(reactLocalStorage.getObject('comicsFavoritos').comic){
 
         let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
         
         for( let i=0; i<myLocalStorage.length; i++ ){
-          console.log("localstorage " + myLocalStorage[i])
+          // console.log("localstorage " + myLocalStorage[i])
           marvel.comics.find(myLocalStorage[i])
             .then((result) => {
 
@@ -73,7 +77,7 @@ export default class Main extends Component {
         }
 
       }else{
-        console.log("normal")
+        // console.log("normal")
         marvel.comics.findAll(5, getRandomInt(120,250))
           .then((result) => {
             this.setState({
@@ -214,10 +218,16 @@ export default class Main extends Component {
   }
   
   render(){
-    // console.log(this.state.comics)
+    console.log(this.state.isReady)
     let myBody
-    if(!this.state.items){
-      myBody = <div><h1>Hola</h1></div>
+    if(!this.state.isReady){
+      myBody = <div style={{ height: '70vh'}} className="valign-wrapper center">
+                  <Row>
+                    <Col s={12}>
+                      <Preloader size='big' flashing/>
+                    </Col>
+                  </Row>
+                </div>
     }else{
       myBody = <Body
                   items={this.state.items}
