@@ -11,9 +11,9 @@ export default class SelectComic extends Component{
   constructor(props){
     super(props)
   }
-  componentWillUpdate(prevProps, prevState){
-    console.log("will update " , prevProps)
-  }
+  // componentDidUpdate(prevProps, prevState){
+  //   console.log(prevProps)
+  // }
   render(){
     let myFavoriteOn = <div>
                           <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>

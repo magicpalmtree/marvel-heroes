@@ -18,7 +18,8 @@ export default class Main extends Component {
       comics: [],
       selectComic: [],
       search : '',
-      idFav: '',
+      idSearch: '',
+      idFav: [],
       isToggleOn: false
     }
     this.searchSuper = this.searchSuper.bind(this)
@@ -27,20 +28,19 @@ export default class Main extends Component {
     this.deleteFavorite = this.deleteFavorite.bind(this)
     this.addFavorite = this.addFavorite.bind(this)
     this.resetComponentComic = this.resetComponentComic.bind(this)
-
-    console.log(this.props)
   }
+
   componentDidMount(){
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
     myBody.style.minHeight = '100vh'
     myBody.style.flexDirection = 'column'
- 
 
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
+    console.log()
     
     marvel.characters.findAll(10)
       .then((result) => {
@@ -50,19 +50,27 @@ export default class Main extends Component {
       })
       .fail(console.error)
       .done()
+    
+    let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
 
-      marvel.comics.findAll(5, getRandomInt(20,50) )
-        .then((result) => {
-          this.setState({
-            comics : result.data
-          })
+      if(myLocalStorage.length > 0 ){
+        
+        for( let i=0; i<myLocalStorage.length; i++ ){
+          console.log("localstorage " + myLocalStorage[i])
+          marvel.comics.find(myLocalStorage[i])
+            .then((result) => {
+              this.setState({
+                comics : result.data
+              })
+            }
+            )
+            .fail(console.error)
+            .done();
         }
-        )
-        .fail(console.error)
-        .done();
-
-      if(reactLocalStorage.getObject('comicsFavoritos')){
-        marvel.comics.find(reactLocalStorage.getObject('comicsFavoritos').comic)
+        
+      }else{
+        console.log("normal")
+        marvel.comics.findAll(5, getRandomInt(20,50))
           .then((result) => {
             this.setState({
               comics : result.data
@@ -70,9 +78,13 @@ export default class Main extends Component {
           }
           )
           .fail(console.error)
-          .done();
+          .done();          
       }
   }
+  componentDidUpdate(prevProps, prevState){
+    console.log(prevState.idFav)  
+  }
+
   searchSuper(event){
     this.setState({
       search : event.target.value
@@ -90,6 +102,7 @@ export default class Main extends Component {
       .fail(console.error)
       .done()
   }
+
   paginationNumber(event){
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
@@ -132,9 +145,10 @@ export default class Main extends Component {
         .done()
     }
   }
+
   clickComic(event){
     this.setState({
-      idFav: event._targetInst._hostNode.id
+      idSearch: event._targetInst._hostNode.id
     })
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
@@ -145,32 +159,49 @@ export default class Main extends Component {
       .fail(console.error)
       .done();
   }
-  deleteFavorite(event){
-    let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
-    myDelete.style.display = 'none';
-  }
+
   addFavorite(event){
     event.preventDefault()
-    
+    let myComicsCollection = this.state.idFav.slice()
+    myComicsCollection.push(this.state.idSearch)
+
     this.setState({
-      isToggleOn: true
+      isToggleOn: true,
+      idFav: myComicsCollection
     })
+
+    reactLocalStorage.set('comicsFavoritos', true)
+    reactLocalStorage.setObject('comicsFavoritos', {'comic': this.state.idFav })       
 
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-    if(!this.state.isToggleOn){
-      marvel.comics.find(this.state.idFav)
-        .then((result) => {
-          this.setState({
-            comics : result.data
-          })
-        }
-        )
-        .fail(console.error)
-        .done();
-    }
+
+    console.log(this.state.idFav)
+
+    // for(let i=0; i<this.state.idFav.length; i++){
+    //   console.log("idFav: " + this.state.idFav[i])
+
+    //   reactLocalStorage.set('comicsFavoritos', true)
+    //   reactLocalStorage.setObject('comicsFavoritos', {'comic': this.state.idFav[i] })
+
+    //   marvel.comics.find(this.state.idFav[i])
+    //     .then((result) => {
+    //       this.setState({
+    //         comics : result.data
+    //       })
+    //     }
+    //     )
+    //     .fail(console.error)
+    //     .done();      
+
+    // }
+
+  }  
+  deleteFavorite(event){
+    let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
+    myDelete.style.display = 'none';
   }
   resetComponentComic(event){
     this.setState({
@@ -178,7 +209,6 @@ export default class Main extends Component {
     })
   }
   
-
   render(){
     let myBody
     if(!this.state.items){
