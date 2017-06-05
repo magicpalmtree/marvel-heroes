@@ -10,7 +10,6 @@ import Radium from 'radium'
 
 export default class Favorites extends Component{
   render(){
-    console.log(this.props.comics)
     let contentTitle = this.props.contentTitle[2], myFavorite = []
 
     this.props.comics.forEach((favorite) => {

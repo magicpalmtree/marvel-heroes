@@ -39,9 +39,7 @@ export default class Main extends Component {
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
-    })
-    console.log()
-    
+    })    
     marvel.characters.findAll(10)
       .then((result) => {
         this.setState({
@@ -50,27 +48,33 @@ export default class Main extends Component {
       })
       .fail(console.error)
       .done()
-    
-    let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
+        
 
-      if(myLocalStorage.length > 0 ){
+      if(reactLocalStorage.getObject('comicsFavoritos').comic){
+
+        let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
         
         for( let i=0; i<myLocalStorage.length; i++ ){
           console.log("localstorage " + myLocalStorage[i])
           marvel.comics.find(myLocalStorage[i])
             .then((result) => {
+
+              let myComicsLocal = this.state.comics.slice()
+              myComicsLocal.push(result)
+              // console.log(myComicsLocal)
+              // console.log(result)
               this.setState({
                 comics : result.data
               })
             }
-            )
+            )           
             .fail(console.error)
             .done();
         }
-        
+
       }else{
         console.log("normal")
-        marvel.comics.findAll(5, getRandomInt(20,50))
+        marvel.comics.findAll(5, getRandomInt(120,250))
           .then((result) => {
             this.setState({
               comics : result.data
@@ -82,7 +86,7 @@ export default class Main extends Component {
       }
   }
   componentDidUpdate(prevProps, prevState){
-    console.log(prevState.idFav)  
+    // console.log(prevState.idFav)  
   }
 
   searchSuper(event){
@@ -155,7 +159,9 @@ export default class Main extends Component {
       privateKey: this.props.data[0].b
     })
     marvel.comics.find(event._targetInst._hostNode.id)
-      .then(result => { this.setState({selectComic: result.data}) })
+      .then(result => {
+        this.setState({selectComic: result.data}) 
+      })
       .fail(console.error)
       .done();
   }
@@ -177,8 +183,6 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
-
-    console.log(this.state.idFav)
 
     // for(let i=0; i<this.state.idFav.length; i++){
     //   console.log("idFav: " + this.state.idFav[i])
@@ -210,6 +214,7 @@ export default class Main extends Component {
   }
   
   render(){
+    // console.log(this.state.comics)
     let myBody
     if(!this.state.items){
       myBody = <div><h1>Hola</h1></div>
