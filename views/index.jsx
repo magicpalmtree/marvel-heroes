@@ -26,17 +26,22 @@ export default class Main extends Component {
     this.clickComic = this.clickComic.bind(this)
     this.deleteFavorite = this.deleteFavorite.bind(this)
     this.addFavorite = this.addFavorite.bind(this)
+    this.resetComponentComic = this.resetComponentComic.bind(this)
+
+    console.log(this.props)
   }
   componentDidMount(){
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
     myBody.style.minHeight = '100vh'
     myBody.style.flexDirection = 'column'
+ 
 
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
+    
     marvel.characters.findAll(10)
       .then((result) => {
         this.setState({
@@ -146,9 +151,10 @@ export default class Main extends Component {
   }
   addFavorite(event){
     event.preventDefault()
-    this.setState(prevState => ({
-      isToggleOn: !prevState.isToggleOn
-    }));
+    
+    this.setState({
+      isToggleOn: true
+    })
 
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
@@ -166,8 +172,30 @@ export default class Main extends Component {
         .done();
     }
   }
+  resetComponentComic(event){
+    this.setState({
+      isToggleOn: false
+    })
+  }
+  
 
   render(){
+    let myBody
+    if(!this.state.items){
+      myBody = <div><h1>Hola</h1></div>
+    }else{
+      myBody = <Body
+                  items={this.state.items}
+                  comics={this.state.comics}
+                  paginationN={this.paginationNumber}
+                  deleteFavorite={this.deleteFavorite}
+                  clickComic={this.clickComic}
+                  selectComic={this.state.selectComic[0]}
+                  isToggleOn={this.state.isToggleOn}
+                  addFavorite={this.addFavorite}
+                  resetComponentComic={this.resetComponentComic}
+                /> 
+    }
     return(
       <div style={style.body}>
           <Header
@@ -175,16 +203,7 @@ export default class Main extends Component {
             onChange={this.searchSuper}
             search={this.state.search}
             />
-          <Body
-            items={this.state.items}
-            comics={this.state.comics}
-            paginationN={this.paginationNumber}
-            deleteFavorite={this.deleteFavorite}
-            clickComic={this.clickComic}
-            selectComic={this.state.selectComic[0]}
-            isToggleOn={this.state.isToggleOn}
-            addFavorite={this.addFavorite}
-            />
+            {myBody}
           <MyFooter />
       </div>
     )
@@ -197,15 +216,12 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-
 const style = {
   body:{
     flex: '1 0 auto',
     backgroundColor: '#eee'
   }
 }
-
-
 
 const CONTENT = [
   // HEADER

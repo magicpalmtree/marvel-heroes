@@ -23,6 +23,7 @@ export default class Body extends Component{
               selectComic={this.props.selectComic}
               isToggleOn={this.props.isToggleOn}
               addFavorite={this.props.addFavorite}
+              resetComponentComic={this.props.resetComponentComic}
               contentTitle={CONTENT}
             />
 

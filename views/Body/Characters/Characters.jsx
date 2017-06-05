@@ -71,6 +71,7 @@ export default class Characters extends Component{
                          description={this.props.selectComic.description}
                          isToggleOn={this.props.isToggleOn}
                          addFavorite={this.props.addFavorite}
+                         resetComponentComic={this.props.resetComponentComic}
                        />
     }else{
       mySelectedComic = <SelectComic

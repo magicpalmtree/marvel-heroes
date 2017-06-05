@@ -43,7 +43,9 @@
     "babelify": "^7.3.0",
     "browserify": "^14.4.0",
     "chai": "^4.0.0",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "uglify": "^0.1.5",
+    "uglify-js": "^3.0.15"
   },
   "scripts": {
     "test": "",

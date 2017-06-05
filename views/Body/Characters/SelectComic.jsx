@@ -8,6 +8,12 @@ import { bounce, fadeIn } from 'react-animations'
 import Radium from 'radium'
 
 export default class SelectComic extends Component{
+  constructor(props){
+    super(props)
+  }
+  componentWillUpdate(prevProps, prevState){
+    console.log("will update " , prevProps)
+  }
   render(){
     let myFavoriteOn = <div>
                           <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
@@ -31,9 +37,10 @@ export default class SelectComic extends Component{
         <div className="modal-content">
         <a
           className="modal-action modal-close btn-floating btn-large waves-effect waves-light black"
-          style={{ position: 'absolute', position: 'absolute', width: 30, height: 30, top: '20px' , right: '20px' }}
+          style={style.closeModal}
+          onClick={this.props.resetComponentComic}
         >
-          <i style={{ lineHeight: '30px' }} className="fa fa-times" aria-hidden="true"></i>
+          <i style={style.iconCloseModal} className="fa fa-times" aria-hidden="true"></i>
         </a>
           <Row>
             <Col s={12} m={4}>
@@ -45,14 +52,14 @@ export default class SelectComic extends Component{
             </Col>
           </Row>
         </div>
-        <div className="modal-footer" style={{ padding: '0', height: 'auto' }}>
-          <div className="row center" style={{ marginBottom: '0px' }}>
+        <div className="modal-footer" style={style.modalFooter}>
+          <div className="row center" style={style.rowModalFooter}>
             <Col s={12} m={6} className="grey lighten-2 btn-large waves-effect waves-light">
-              <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
+              <Col s={2} className="valign-wrapper" style={style.contImgModal}>
                 <img src="http://camiloarguello.co/img/icons/shopping-cart-primary.png" />
               </Col>
               <Col s={10}>
-                <p style={{ lineHeight: '1em', fontSize: '1.2em', color: 'black' }}>Buy for $3,99</p>
+                <p style={style.btnBuyModal}>Buy for $3,99</p>
               </Col>
             </Col>
             <Col s={12} m={6} className="grey lighten-3 btn-large waves-effect waves-light" onClick={this.props.addFavorite}>
@@ -66,4 +73,28 @@ export default class SelectComic extends Component{
 }
 
 const style = {
+  closeModal:{
+    position: 'absolute',  
+    width: 30, 
+    height: 30, 
+    top: '20px', 
+    right: '20px'
+  },
+  iconCloseModal:{
+    lineHeight: '30px'
+  },
+  modalFooter:{
+    padding: '0', 
+    height: 'auto'
+  },
+  rowModalFooter:{
+    marginBottom: '0px'
+  },
+  contImgModal:{
+    height: '55px'
+  },btnBuyModal:{
+    lineHeight: '1em', 
+    fontSize: '1.2em', 
+    color: 'black'
+  }
 }

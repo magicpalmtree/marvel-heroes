@@ -17,7 +17,9 @@ export default class Header extends Component{
         <div className="container">
           <Row style={style.row}>
             <Col s={12} m={3} style={style.header} >
-              <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} />
+              <a href="/">
+                <img src={contentHeader.Logoimg} alt={contentHeader.Logoalt} style={style.imgHeader} />
+              </a>
             </Col>
             <Col s={12} m={9} className="nav-wrapper">
               <form style={{ backgroundColor: 'rgb(45,39,39)' }}>
