@@ -32,7 +32,6 @@ export default class Main extends Component {
   }
 
   componentDidMount(){
-    console.log("did mount")
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
     myBody.style.minHeight = '100vh'
@@ -42,6 +41,7 @@ export default class Main extends Component {
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
     })
+
     marvel.characters.findAll(10)
       .then((result) => {
         this.setState({
@@ -54,7 +54,6 @@ export default class Main extends Component {
           isReady: true
         })
       )
-    console.log(reactLocalStorage.getObject('comicsFavoritos').comic)
 
     if(reactLocalStorage.getObject('comicsFavoritos').comic){
 
@@ -104,7 +103,6 @@ export default class Main extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
-    // console.log(prevState.idFav)
   }
 
   searchSuper(event){
@@ -167,7 +165,6 @@ export default class Main extends Component {
         .done()
     }
   }
-
   clickComic(event){
     this.setState({
       idSearch: event._targetInst._hostNode.id
@@ -185,6 +182,7 @@ export default class Main extends Component {
   }
   addFavorite(event){
     event.preventDefault()
+
     let myComicsCollection = this.state.idFav.slice()
     myComicsCollection.push(this.state.idSearch)
 
@@ -196,28 +194,28 @@ export default class Main extends Component {
     reactLocalStorage.set('comicsFavoritos', true)
     reactLocalStorage.setObject('comicsFavoritos', {'comic': this.state.idFav })
 
-    let marvel = api.createClient({
-      publicKey: this.props.data[0].a,
-      privateKey: this.props.data[0].b
-    })
+    if(myComicsCollection.length > 0){
 
-    // for(let i=0; i<this.state.idFav.length; i++){
-    //   console.log("idFav: " + this.state.idFav[i])
+      let marvel = api.createClient({
+        publicKey: this.props.data[0].a,
+        privateKey: this.props.data[0].b
+      })
 
-    //   reactLocalStorage.set('comicsFavoritos', true)
-    //   reactLocalStorage.setObject('comicsFavoritos', {'comic': this.state.idFav[i] })
+      for(let i=0; i<myComicsCollection.length; i++){
 
-    //   marvel.comics.find(this.state.idFav[i])
-    //     .then((result) => {
-    //       this.setState({
-    //         comics : result.data
-    //       })
-    //     }
-    //     )
-    //     .fail(console.error)
-    //     .done();
+        marvel.comics.find(myComicsCollection[i])
+          .then((result) => {
+            console.log(result)
+            this.setState({
+              comics : result.data
+            })
+          }
+          )
+          .fail(console.error)
+          .done();
+      }
+    }
 
-    // }
 
   }
   deleteFavorite(event){
