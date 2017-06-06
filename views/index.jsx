@@ -32,6 +32,7 @@ export default class Main extends Component {
   }
 
   componentDidMount(){
+    console.log("did mount")
     let myBody = document.getElementById("app")
     myBody.style.display = 'flex'
     myBody.style.minHeight = '100vh'
@@ -53,41 +54,54 @@ export default class Main extends Component {
           isReady: true
         })
       )
+    console.log(reactLocalStorage.getObject('comicsFavoritos').comic)
 
-      if(reactLocalStorage.getObject('comicsFavoritos').comic){
+    if(reactLocalStorage.getObject('comicsFavoritos').comic){
 
-        let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
+      let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
 
+      if(myLocalStorage.length){
         for( let i=0; i<myLocalStorage.length; i++ ){
-          // console.log("localstorage " + myLocalStorage[i])
-          marvel.comics.find(myLocalStorage[i])
-            .then((result) => {
+         console.log("localstorage " + myLocalStorage[i])
+         marvel.comics.find(myLocalStorage[i])
+           .then((result) => {
 
-              let myComicsLocal = this.state.comics.slice()
-              myComicsLocal.push(result)
-              // console.log(myComicsLocal)
-              // console.log(result)
-              this.setState({
-                comics : result.data
-              })
-            }
-            )
-            .fail(console.error)
-            .done();
+             let myComicsLocal = this.state.comics.slice()
+             myComicsLocal.push(result)
+             // console.log(myComicsLocal)
+             // console.log(result)
+             this.setState({
+               comics : result.data
+             })
+           }
+           )
+           .fail(console.error)
+           .done();
+       }
+     }else{
+       marvel.comics.find(myLocalStorage)
+         .then((result) => {
+           this.setState({
+             comics : result.data
+           })
+         }
+         )
+         .fail(console.error)
+         .done();
+     }
+
+    }else{
+      console.log("normal")
+      marvel.comics.findAll(5, getRandomInt(120,250))
+        .then((result) => {
+          this.setState({
+            comics : result.data
+          })
         }
-
-      }else{
-        // console.log("normal")
-        marvel.comics.findAll(5, getRandomInt(120,250))
-          .then((result) => {
-            this.setState({
-              comics : result.data
-            })
-          }
-          )
-          .fail(console.error)
-          .done();
-      }
+        )
+        .fail(console.error)
+        .done();
+    }
   }
   componentDidUpdate(prevProps, prevState){
     // console.log(prevState.idFav)
