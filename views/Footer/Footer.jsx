@@ -8,16 +8,15 @@ import { CSSTransitionGroup } from 'react-transition-group'
 export default class MyFooter extends Component{
   render(){
     return(
-      <Footer style={style.footerPos} copyrights="© 2017 Camilo Arguello"
+      <Footer style={this.props.style} copyrights="© 2017 Camilo Arguello"
         moreLinks={
-          <a className="grey-text text-lighten-4 right" href="#!">camiloarguello.co</a>
+          <a className="grey-text text-lighten-4 right" href="http://camiloarguello.co">camiloarguello.co</a>
         }
         links={
           <ul>
-            <li><a className="grey-text text-lighten-3" href="#!"></a></li>
-            <li><a className="grey-text text-lighten-3" href="#!">Link 2</a></li>
-            <li><a className="grey-text text-lighten-3" href="#!">Link 3</a></li>
-            <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
+            <li><a className="grey-text text-lighten-3" target="_blank" href="https://www.linkedin.com/in/kmiloarguello/"><i className="fa fa-linkedin" aria-hidden="true"></i></a></li>
+            <li><a className="grey-text text-lighten-3" target="_blank" href="https://github.com/kmiloarguello"><i className="fa fa-github" aria-hidden="true"></i></a></li>
+            <li><a className="grey-text text-lighten-3" target="_blank" href="https://www.instagram.com/kmilo_arguello/"><i className="fa fa-instagram" aria-hidden="true"></i></a></li>
           </ul>
         }
         className='myFooter'

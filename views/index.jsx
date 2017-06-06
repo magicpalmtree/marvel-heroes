@@ -40,7 +40,7 @@ export default class Main extends Component {
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
       privateKey: this.props.data[0].b
-    })    
+    })
     marvel.characters.findAll(10)
       .then((result) => {
         this.setState({
@@ -57,7 +57,7 @@ export default class Main extends Component {
       if(reactLocalStorage.getObject('comicsFavoritos').comic){
 
         let myLocalStorage = reactLocalStorage.getObject('comicsFavoritos').comic
-        
+
         for( let i=0; i<myLocalStorage.length; i++ ){
           // console.log("localstorage " + myLocalStorage[i])
           marvel.comics.find(myLocalStorage[i])
@@ -71,7 +71,7 @@ export default class Main extends Component {
                 comics : result.data
               })
             }
-            )           
+            )
             .fail(console.error)
             .done();
         }
@@ -86,11 +86,11 @@ export default class Main extends Component {
           }
           )
           .fail(console.error)
-          .done();          
+          .done();
       }
   }
   componentDidUpdate(prevProps, prevState){
-    // console.log(prevState.idFav)  
+    // console.log(prevState.idFav)
   }
 
   searchSuper(event){
@@ -164,12 +164,11 @@ export default class Main extends Component {
     })
     marvel.comics.find(event._targetInst._hostNode.id)
       .then(result => {
-        this.setState({selectComic: result.data}) 
+        this.setState({selectComic: result.data})
       })
       .fail(console.error)
       .done();
   }
-
   addFavorite(event){
     event.preventDefault()
     let myComicsCollection = this.state.idFav.slice()
@@ -181,7 +180,7 @@ export default class Main extends Component {
     })
 
     reactLocalStorage.set('comicsFavoritos', true)
-    reactLocalStorage.setObject('comicsFavoritos', {'comic': this.state.idFav })       
+    reactLocalStorage.setObject('comicsFavoritos', {'comic': this.state.idFav })
 
     let marvel = api.createClient({
       publicKey: this.props.data[0].a,
@@ -202,11 +201,11 @@ export default class Main extends Component {
     //     }
     //     )
     //     .fail(console.error)
-    //     .done();      
+    //     .done();
 
     // }
 
-  }  
+  }
   deleteFavorite(event){
     let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
     myDelete.style.display = 'none';
@@ -216,42 +215,49 @@ export default class Main extends Component {
       isToggleOn: false
     })
   }
-  
+
   render(){
-    console.log(this.state.isReady)
-    let myBody
     if(!this.state.isReady){
-      myBody = <div style={{ height: '70vh'}} className="valign-wrapper center">
-                  <Row>
-                    <Col s={12}>
-                      <Preloader size='big' flashing/>
-                    </Col>
-                  </Row>
-                </div>
+      return(
+        <div style={style.body}>
+            <Header
+              contentHeader={CONTENT}
+              onChange={this.searchSuper}
+              search={this.state.search}
+              />
+              <div style={{ height: '90vh'}} className="valign-wrapper center">
+                <Row>
+                  <Col s={12}>
+                    <Preloader size='big' flashing/>
+                  </Col>
+                </Row>
+              </div>
+            <MyFooter style={style.footerPosA}/>
+        </div>
+      )
     }else{
-      myBody = <Body
-                  items={this.state.items}
-                  comics={this.state.comics}
-                  paginationN={this.paginationNumber}
-                  deleteFavorite={this.deleteFavorite}
-                  clickComic={this.clickComic}
-                  selectComic={this.state.selectComic[0]}
-                  isToggleOn={this.state.isToggleOn}
-                  addFavorite={this.addFavorite}
-                  resetComponentComic={this.resetComponentComic}
-                /> 
+      return(
+        <div style={style.body}>
+            <Header
+              contentHeader={CONTENT}
+              onChange={this.searchSuper}
+              search={this.state.search}
+              />
+              <Body
+                items={this.state.items}
+                comics={this.state.comics}
+                paginationN={this.paginationNumber}
+                deleteFavorite={this.deleteFavorite}
+                clickComic={this.clickComic}
+                selectComic={this.state.selectComic[0]}
+                isToggleOn={this.state.isToggleOn}
+                addFavorite={this.addFavorite}
+                resetComponentComic={this.resetComponentComic}
+              />
+            <MyFooter style={style.footerPosB}/>
+        </div>
+      )
     }
-    return(
-      <div style={style.body}>
-          <Header
-            contentHeader={CONTENT}
-            onChange={this.searchSuper}
-            search={this.state.search}
-            />
-            {myBody}
-          <MyFooter />
-      </div>
-    )
   }
 }
 
@@ -265,6 +271,17 @@ const style = {
   body:{
     flex: '1 0 auto',
     backgroundColor: '#eee'
+  },
+  footerPosB:{
+    position: 'relative',
+    bottom: 0,
+    backgroundColor: 'rgb(45,39,39)'
+  },
+  footerPosA:{
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    backgroundColor: 'rgb(45,39,39)'
   }
 }
 

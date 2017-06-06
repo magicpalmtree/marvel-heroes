@@ -7,6 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import { bounce, fadeIn } from 'react-animations'
 import Radium from 'radium'
 
+
 export default class Character extends Component{
   constructor(props){
     super(props)
@@ -27,7 +28,7 @@ export default class Character extends Component{
       <div className="col s12 m6 valign-wrapper">
         <img style={style.imgCard} className="circle" src={this.props.thumbnail} alt="" />
       </div>
-      
+
       <div style={style.cardBody} className="col s12 m6 sidebar-box">
         <h3 style={style.h3Card} className="card-title"><b>{this.props.name}</b></h3>
 
@@ -40,7 +41,7 @@ export default class Character extends Component{
             style={style.butonCard}
             className="waves-effect waves-light btn red">
                 View More
-            </a>            
+            </a>
         </div>
       </div>
 
@@ -111,7 +112,7 @@ const style = {
     height: '400px'
   },
   descriptionCard:{
-    maxHeight: '100px', 
+    maxHeight: '100px',
     overflow: 'hidden'
   },
   imgCard:{
@@ -130,8 +131,8 @@ const style = {
   butonContCard:{
       margin: '20px 0'
   },
-  butonCard:{
-      fontSize: '0.8em'
+  butonCard: {
+    fontSize: '0.8em',
   },
   aCardFooter:{
     fontSize: '0.8em',

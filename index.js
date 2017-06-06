@@ -72,7 +72,7 @@ app.use('/', function (req, res) {
         script({ src: 'https://code.jquery.com/jquery-2.1.1.min.js'}),
         script({ src: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js'}),
         script({ id: 'initial-data', type: 'text/plain', 'data-json': initialData}),
-        script({ src: '/bundle.js'})
+        script({ src: 'build.js'})
       )
 
     )
