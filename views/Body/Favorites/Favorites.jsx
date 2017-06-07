@@ -48,7 +48,7 @@ class Favorite extends Component{
     return(
       <li
         id={this.props.id}
-        className="center"
+        className="center scale-transition"
       >
           <a
             onClick={this.props.onClick}

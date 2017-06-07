@@ -17,6 +17,7 @@ export default class Main extends Component {
       isReady: false,
       items : [],
       comics: [],
+      myComics: '',
       selectComic: [],
       search : '',
       idSearch: '',
@@ -42,7 +43,7 @@ export default class Main extends Component {
       privateKey: this.props.data[0].b
     })
 
-    marvel.characters.findAll(10)
+    marvel.characters.findAll(10,getRandomInt(1,50))
       .then((result) => {
         this.setState({
           items: result.data
@@ -61,14 +62,11 @@ export default class Main extends Component {
 
       if(myLocalStorage.length){
         for( let i=0; i<myLocalStorage.length; i++ ){
-         console.log("localstorage " + myLocalStorage[i])
          marvel.comics.find(myLocalStorage[i])
            .then((result) => {
 
              let myComicsLocal = this.state.comics.slice()
              myComicsLocal.push(result)
-             // console.log(myComicsLocal)
-             // console.log(result)
              this.setState({
                comics : result.data
              })
@@ -90,7 +88,6 @@ export default class Main extends Component {
      }
 
     }else{
-      console.log("normal")
       marvel.comics.findAll(5, getRandomInt(120,250))
         .then((result) => {
           this.setState({
@@ -203,26 +200,31 @@ export default class Main extends Component {
         privateKey: this.props.data[0].b
       })
 
-      for(let i=0; i<myComicsCollection.length; i++){
-        console.log(myComicsCollection)
-        marvel.comics.find(myComicsCollection[i])
-          .then((result) => {
-            console.log(result)
-            this.setState({
-              comics : result.data
-            })
-          }
+      let myBusqueda = []
+      myComicsCollection.forEach(
+        (busqueda) => {
+
+          myBusqueda.push(
+            marvel.comics.find(busqueda)
+              .then((result) => {
+                this.setState({
+                  comics : result.data
+                })}
+              )
+              .fail(console.error)
+              .done()
           )
-          .fail(console.error)
-          .done();
-      }
+        }
+      )
+      console.log(myBusqueda)
     }
 
 
   }
   deleteFavorite(event){
     let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
-    myDelete.style.display = 'none';
+    myDelete.className += " scale-out";
+    setTimeout(function(){ myDelete.style.display = 'none' }, 500)
   }
   resetComponentComic(event){
     this.setState({
