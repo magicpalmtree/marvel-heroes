@@ -1,4 +1,4 @@
-giimport React, { Component } from 'react'
+import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import api from 'marvel-api'
 import { Pagination,Button, Icon, Card, Row, Col, Footer, Preloader } from 'react-materialize'
