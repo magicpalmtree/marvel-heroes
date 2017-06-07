@@ -2,6 +2,8 @@
 
 Marvel Challenge es una aplicación web que busca los personajes del universo Marvel. Además permite ver cuales son los comics asociados a cada personaje. En Marvel Challenge se puede añadir comics favoritos y ver en detalle cada uno de ellos.
 
+La documentación de este proyecto está en la sección de [Wiki](https://github.com/kmiloarguello/testGrability/wiki).
+
 Este proyecto está continuamente en mejora desde que fue desarrollado por primera vez, así que si deseas ayudar lo único que debes hacer es clonar el proyecto.
 
 `git clone https://github.com/kmiloarguello/testGrability.git`
