@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+giimport React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import api from 'marvel-api'
 import { Pagination,Button, Icon, Card, Row, Col, Footer, Preloader } from 'react-materialize'
@@ -44,7 +44,6 @@ export default class Main extends Component {
 
     marvel.characters.findAll(10)
       .then((result) => {
-        console.log(result)
         this.setState({
           items: result.data
         })
