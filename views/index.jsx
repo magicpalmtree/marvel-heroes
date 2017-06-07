@@ -44,11 +44,12 @@ export default class Main extends Component {
 
     marvel.characters.findAll(10)
       .then((result) => {
+        console.log(result)
         this.setState({
           items: result.data
         })
       })
-      .fail(console.error)
+      .fail()
       .done(
         this.setState({
           isReady: true
@@ -102,8 +103,6 @@ export default class Main extends Component {
         .done();
     }
   }
-  componentDidUpdate(prevProps, prevState){
-  }
 
   searchSuper(event){
     this.setState({
@@ -119,7 +118,9 @@ export default class Main extends Component {
       .then(result => {
           this.setState({items: result.data})
       })
-      .fail(console.error)
+      .fail((err)=>{
+        console.log(err)
+      })
       .done()
   }
 
@@ -165,6 +166,7 @@ export default class Main extends Component {
         .done()
     }
   }
+
   clickComic(event){
     this.setState({
       idSearch: event._targetInst._hostNode.id
@@ -180,6 +182,7 @@ export default class Main extends Component {
       .fail(console.error)
       .done();
   }
+
   addFavorite(event){
     event.preventDefault()
 
@@ -202,7 +205,7 @@ export default class Main extends Component {
       })
 
       for(let i=0; i<myComicsCollection.length; i++){
-
+        console.log(myComicsCollection)
         marvel.comics.find(myComicsCollection[i])
           .then((result) => {
             console.log(result)

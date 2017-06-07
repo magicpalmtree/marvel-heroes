@@ -10,9 +10,18 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import { bounce, fadeIn } from 'react-animations'
 import Radium from 'radium'
 
+let doneonce
+
 export default class Characters extends Component{
   constructor(props){
     super(props)
+    this.loadCharactersAnimated = this.loadCharactersAnimated.bind(this)
+  }
+  loadCharactersAnimated(){
+    if(!doneonce){
+      doneonce = true
+      Materialize.showStaggeredList('#characters-id')
+    }
   }
   render(){
     let myCharacter = [],
@@ -75,22 +84,22 @@ export default class Characters extends Component{
                        />
     }else{
       mySelectedComic = <SelectComic
-                         id="noid"
-                         img="no_image"
-                         name="no title"
-                         description="no description"
+                         id=""
+                         img=""
+                         name=""
+                         description=""
                        />
     }
-
     return(
       <div>
         <Col s={12} m={9} style={style.header} className="grey lighten-5">
+
           <TitleSection
             img={contentTitle.titleImg}
             alt={contentTitle.titleAlt}
             title={contentTitle.titleText}
           />
-          <ul className="container">
+          <ul className="container" id="characters-id" >
             {myCharacter}
           </ul>
           {mySelectedComic}

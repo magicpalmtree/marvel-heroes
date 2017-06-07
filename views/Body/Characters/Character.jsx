@@ -7,13 +7,22 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import { bounce, fadeIn } from 'react-animations'
 import Radium from 'radium'
 
-
 export default class Character extends Component{
   constructor(props){
     super(props)
+    this._mouseHover = this._mouseHover.bind(this)
+    this._mouseLeave = this._mouseLeave.bind(this)
   }
   componentDidMount(){
     $('.modal').modal()
+  }
+  _mouseHover(e){
+    e.preventDefault()
+    e.target.style.color = 'red'
+  }
+  _mouseLeave(e){
+    e.preventDefault()
+    e.target.style.color = '#786e6d'
   }
   render(){
       let myDescription, itHasdescription = this.props.description.length
@@ -45,7 +54,9 @@ export default class Character extends Component{
         </div>
       </div>
 
-      <div style={style.footerCardHeight} className="col s12">
+      <div
+        style={style.footerCardHeight}
+        className="col s12">
         <p><b>Related Comics</b></p>
         <ul className="col s6">
           <li>
@@ -55,17 +66,22 @@ export default class Character extends Component{
               className="modal-trigger"
               onClick={this.props.onClick}
               style={style.aCardFooter}
+              onMouseEnter={this._mouseHover}
+              onMouseLeave={this._mouseLeave}
             >
               {this.props.comicA}
             </a>
           </li>
-          <li style={style.liFooterCard}>
+          <li
+            style={style.liFooterCard}>
             <a
               href="#modal1"
               id={this.props.comicBid}
               className="modal-trigger"
               onClick={this.props.onClick}
               style={style.aCardFooter}
+              onMouseEnter={this._mouseHover}
+              onMouseLeave={this._mouseLeave}
             >
               {this.props.comicB}
             </a>
@@ -79,17 +95,22 @@ export default class Character extends Component{
               className="modal-trigger"
               onClick={this.props.onClick}
               style={style.aCardFooter}
+              onMouseEnter={this._mouseHover}
+              onMouseLeave={this._mouseLeave}
             >
               {this.props.comicC}
             </a>
           </li>
-          <li style={style.liFooterCard}>
+          <li
+            style={style.liFooterCard}>
             <a
               href="#modal1"
               id={this.props.comicDid}
               className="modal-trigger"
               onClick={this.props.onClick}
               style={style.aCardFooter}
+              onMouseEnter={this._mouseHover}
+              onMouseLeave={this._mouseLeave}
             >
               {this.props.comicD}
             </a>

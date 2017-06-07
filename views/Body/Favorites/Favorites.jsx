@@ -52,7 +52,7 @@ class Favorite extends Component{
       >
           <a
             onClick={this.props.onClick}
-            className="btn-floating btn-large waves-effect waves-light black"
+            className="btn-floating btn-large waves-effect waves-light black pulse"
             style={{ position: 'absolute', margin: '-20px 190px' }}
           >
             <i className="fa fa-trash" aria-hidden="true"></i>
