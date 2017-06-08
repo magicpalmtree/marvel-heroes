@@ -146,7 +146,8 @@ const NODESCRIPTION = [
 
 const style = {
   liCard2Height:{
-    margin: '20px'
+    margin: '20px',
+    height: '400px'
   },
   descriptionCard:{
     maxHeight: '100px',
