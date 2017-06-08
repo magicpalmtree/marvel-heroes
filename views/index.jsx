@@ -64,9 +64,6 @@ export default class Main extends Component {
         for( let i=0; i<myLocalStorage.length; i++ ){
          marvel.comics.find(myLocalStorage[i])
            .then((result) => {
-
-             let myComicsLocal = this.state.comics.slice()
-             myComicsLocal.push(result)
              this.setState({
                comics : result.data
              })
@@ -216,16 +213,17 @@ export default class Main extends Component {
           )
         }
       )
-      console.log(myBusqueda)
     }
 
 
   }
+
   deleteFavorite(event){
     let myDelete = event._targetInst._currentElement._owner._renderedComponent._hostNode
     myDelete.className += " scale-out";
     setTimeout(function(){ myDelete.style.display = 'none' }, 500)
   }
+
   resetComponentComic(event){
     this.setState({
       isToggleOn: false
@@ -241,7 +239,7 @@ export default class Main extends Component {
               onChange={this.searchSuper}
               search={this.state.search}
               />
-              <div style={{ height: '90vh'}} className="valign-wrapper center">
+              <div style={{ height: '90vh', position: 'absolute', width: '100%'}} className="valign-wrapper center">
                 <Row>
                   <Col s={12}>
                     <Preloader size='big' flashing/>

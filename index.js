@@ -82,8 +82,8 @@ app.use('/', function (req, res) {
 
 });
 
-app.listen(process.env.PORT, process.env.IP);
+// app.listen(process.env.PORT, process.env.IP);
 
-// app.listen(app.get('port'), function() {
-//   console.log('listening on port 3000')
-// })
+app.listen(app.get('port'), function() {
+  console.log('listening on port 3000')
+})
