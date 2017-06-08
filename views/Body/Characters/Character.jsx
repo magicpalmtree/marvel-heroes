@@ -5,13 +5,12 @@ import { Pagination,Button, Icon, Card, Row, Col, Footer } from 'react-materiali
 import { reactLocalStorage } from 'reactjs-localstorage'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { bounce, fadeIn } from 'react-animations'
-import Radium from 'radium'
+
 
 export default class Character extends Component{
   constructor(props){
     super(props)
     this.state = {
-      isMobile: false,
       myHeightCard: 'auto'
     }
     this._mouseHover = this._mouseHover.bind(this)
@@ -19,18 +18,21 @@ export default class Character extends Component{
   }
   componentDidMount(){
     $('.modal').modal()
-    if (matchMedia) {
-      var mq = window.matchMedia("(min-width: 500px)");
-      mq.addListener(WidthChange);
-      WidthChange(mq);
-    }
-    function WidthChange(mq) {
-      if (mq.matches) {
-        myHeightCard: '400px'
+
+    var para = document.getElementById(this.props.id)
+
+    var mql = window.matchMedia('(max-width: 600px)')
+
+    function screenTest(e) {
+      if (e.matches) {
+        para.style.height = 'auto'
       } else {
-        myHeightCard: 'auto'
+        para.style.height = '400px'
       }
     }
+
+    mql.addListener(screenTest);
+
   }
 
   _mouseHover(e){
@@ -41,7 +43,7 @@ export default class Character extends Component{
     e.preventDefault()
     e.target.style.color = '#786e6d'
   }
-  
+
   render(){
       let myDescription, itHasdescription = this.props.description.length
 
@@ -51,7 +53,7 @@ export default class Character extends Component{
           myDescription = <p style={style.heightText}>{NODESCRIPTION[0].text}</p>
       }
   return(
-    <li style={{ margin: '20px', height: this.state.myHeightCard }}  id={this.props.id}  className="card col s12 m12 l5" >
+    <li style={style.liCard2Height}  id={this.props.id} className="myLista card col s12 m12 l5 scale-transition scale-in" >
       <div className="col s12 m6 valign-wrapper">
         <img style={style.imgCard} className="circle" src={this.props.thumbnail} alt="" />
       </div>
@@ -142,8 +144,10 @@ const NODESCRIPTION = [
     {text : 'Cras quis null commodo aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. Cras quis nulla commodo, aliquam lectus sed, blandit augue.'}
 ]
 
-
 const style = {
+  liCard2Height:{
+    margin: '20px'
+  },
   descriptionCard:{
     maxHeight: '100px',
     overflow: 'hidden'
