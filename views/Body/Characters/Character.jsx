@@ -30,9 +30,7 @@ export default class Character extends Component{
         para.style.height = '400px'
       }
     }
-
     mql.addListener(screenTest);
-
   }
 
   _mouseHover(e){
@@ -43,7 +41,6 @@ export default class Character extends Component{
     e.preventDefault()
     e.target.style.color = '#786e6d'
   }
-
   render(){
       let myDescription, itHasdescription = this.props.description.length
 
@@ -67,6 +64,9 @@ export default class Character extends Component{
         <div style={style.butonContCard}>
             <a
             style={style.butonCard}
+            className="modal-trigger"
+            href="#modal2"
+            onClick={this.props.selectChar}
             className="waves-effect waves-light btn red">
                 View More
             </a>

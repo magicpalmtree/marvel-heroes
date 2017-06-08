@@ -11,9 +11,7 @@ export default class SelectComic extends Component{
   constructor(props){
     super(props)
   }
-  // componentDidUpdate(prevProps, prevState){
-  //   console.log(prevProps)
-  // }
+
   render(){
     let myFavoriteOn = <div>
                           <Col s={2} className="valign-wrapper" style={{ height: '55px' }}>
@@ -74,17 +72,17 @@ export default class SelectComic extends Component{
 
 const style = {
   closeModal:{
-    position: 'absolute',  
-    width: 30, 
-    height: 30, 
-    top: '20px', 
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    top: '20px',
     right: '20px'
   },
   iconCloseModal:{
     lineHeight: '30px'
   },
   modalFooter:{
-    padding: '0', 
+    padding: '0',
     height: 'auto'
   },
   rowModalFooter:{
@@ -93,8 +91,8 @@ const style = {
   contImgModal:{
     height: '55px'
   },btnBuyModal:{
-    lineHeight: '1em', 
-    fontSize: '1.2em', 
+    lineHeight: '1em',
+    fontSize: '1.2em',
     color: 'black'
   }
 }

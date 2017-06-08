@@ -6,6 +6,7 @@ import { reactLocalStorage } from 'reactjs-localstorage'
 import TitleSection from '../TitleSection.jsx'
 import Character from './Character.jsx'
 import SelectComic from './SelectComic.jsx'
+import SelectCharacter from './SelectCharacter.jsx'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { bounce, fadeIn } from 'react-animations'
 import Radium from 'radium'
@@ -15,7 +16,21 @@ let doneonce
 export default class Characters extends Component{
   constructor(props){
     super(props)
+    this.state = {
+      c_name: '',
+      c_desc : '',
+      c_img: ''
+    }
     this.loadCharactersAnimated = this.loadCharactersAnimated.bind(this)
+    this.selectChar = this.selectChar.bind(this)
+  }
+  selectChar(event){
+    let myCSelect = event._targetInst._currentElement._owner._currentElement.props
+    this.setState({
+      c_name: myCSelect.name,
+      c_desc: myCSelect.description,
+      c_img: myCSelect.thumbnail
+    })
   }
   loadCharactersAnimated(){
     if(!doneonce){
@@ -24,16 +39,8 @@ export default class Characters extends Component{
     }
   }
   render(){
-    let myCharacter = [],
-        myComicSearchIdA,
-        myComicSearchIdB,
-        myComicSearchIdC,
-        myComicSearchIdD,
-        contentTitle = this.props.contentTitle[1],
-        comicsSimilarA,
-        comicsSimilarB,
-        comicsSimilarC,
-        comicsSimilarD
+
+    let myCharacter = [], myComicSearchIdA, myComicSearchIdB, myComicSearchIdC, myComicSearchIdD, contentTitle = this.props.contentTitle[1], comicsSimilarA, comicsSimilarB, comicsSimilarC, comicsSimilarD
     this.props.items.forEach((character) => {
       if(character.comics.items.length > 4){
           myComicSearchIdA = character.comics.items[0].resourceURI.match(/([^\/]*)\/*$/)[1]
@@ -59,6 +66,7 @@ export default class Characters extends Component{
           description={character.description}
           thumbnail={character.thumbnail.path + "/standard_amazing." + character.thumbnail.extension}
           onClick={this.props.clickComic}
+          selectChar={this.selectChar}
           comicAid={myComicSearchIdA}
           comicA={comicsSimilarA}
           comicBid={myComicSearchIdB}
@@ -71,7 +79,6 @@ export default class Characters extends Component{
       )
     })
     let mySelectedComic
-
     if(this.props.selectComic){
       mySelectedComic = <SelectComic
                          id={this.props.selectComic.id}
@@ -90,6 +97,7 @@ export default class Characters extends Component{
                          description=""
                        />
     }
+
     return(
       <div>
         <Col s={12} m={9} style={style.header} className="grey lighten-5">
@@ -99,16 +107,25 @@ export default class Characters extends Component{
             alt={contentTitle.titleAlt}
             title={contentTitle.titleText}
           />
+
           <ul className="container" id="characters-id" >
             {myCharacter}
           </ul>
           {mySelectedComic}
+          <SelectCharacter
+            name={this.state.c_name}
+            description={this.state.c_desc.length > 0 ? this.state.c_desc : NODESCRIPTION[0].text}
+            img={this.state.c_img}
+          />
         </Col>
       </div>
     )
   }
 }
 
+const NODESCRIPTION = [
+    {text : 'Cras quis null commodo aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. Cras quis nulla commodo, aliquam lectus sed, blandit augue.'}
+]
 
 const style = {
   header:{
