@@ -22,7 +22,7 @@ export default class MyFooter extends Component{
         className='myFooter'
       >
           <h5 className="white-text">Marvel Character</h5>
-          <p className="grey-text text-lighten-4">This website is only created for educational pursposes and for a job application at Grability.</p>
+          <p className="grey-text text-lighten-4">This website is only created for educational pursposes.</p>
       </Footer>
     )
   }

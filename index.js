@@ -57,7 +57,7 @@ app.use('/', function (req, res) {
         null,
         meta({ charSet : 'utf-8'}),
         title(null,'Marvel Characters | Grability'),
-        link({ rel: 'shortcut icon', href:'http://camiloarguello.co/img/icons/grability_logo_bt5_icon.ico', type: 'image/x-icon'}),
+        link({ rel: 'shortcut icon', href:'http://camiloarguello.co/img/CA_web.ico', type: 'image/x-icon'}),
         meta({ name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'}),
         meta({ name: 'description', content: 'Marvel character search. See your favorite superheroes here!'}),
         meta({ name: 'author', content: 'Camilo Arguello'}),
